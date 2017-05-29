@@ -1,3 +1,5 @@
+# Author: Mr.Un1k0d3r - RingZer0 Team 2017
+
 import random
 import string
 import base64
