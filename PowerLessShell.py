@@ -7,7 +7,7 @@ import sys
 import re
 import os
 
-TEMPLATE = "template.csproj"
+TEMPLATE = "include/template.csproj"
 
 class Generator:
 
