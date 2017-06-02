@@ -27,13 +27,14 @@ PowerLessShell - Remain Stealth
 
 
 
-(Path to the PowerShell script)>>> ../test.txt
+(Path to the PowerShell script)>>> powershell.ps1
 
-(Path for the output MsBuild file)>>> ../payload.csproj
+(Path for the generated MsBuild out file)>>> payload.csproj
 
-Upload payload.csproj on the target system through SMB
-Run the following command on the target system using WMI:
-cmd /c C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe payload.csproj
+
+[+] payload.csproj was generated.
+[+] payload.csproj.cmd was generated.
+[+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
 
 Victim side (Push the file using SMB. Execute the following command using WMI)
