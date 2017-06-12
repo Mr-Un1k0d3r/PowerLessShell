@@ -77,6 +77,9 @@ class Generator:
 		return data
 		
 	def get_error(self):
+		if IS_CMD_ARGS:
+			exit(0)
+
 		current = self.error
 		self.error = 0
 		return current
