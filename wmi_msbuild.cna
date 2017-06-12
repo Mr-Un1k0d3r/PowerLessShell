@@ -53,7 +53,7 @@ sub wmi_msbuild_func {
         	return;
    	}	
 
-	btask($1, "Tasked Beacon to spawn to to $2 (" . listener_describe($3, $2) . ") via PowerLessShell");
+	btask($1, "Tasked Beacon to spawn to $2 (" . listener_describe($3, $2) . ") via PowerLessShell");
 	#write payload to disk - i re-do this every time in case the listener changes. Probably could be more efficient
 	gen_payload($3);
 	#Use PowerLessShell.py to generate .CS files    
