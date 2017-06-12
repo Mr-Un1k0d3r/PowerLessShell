@@ -8,6 +8,7 @@ import re
 import os
 
 TEMPLATE = "include/template.csproj"
+IS_CMD_ARGS = False
 
 class Generator:
 
@@ -57,7 +58,9 @@ class Generator:
 	def format_rc4_key(self, key):
 		return "0x" + ", 0x".join(re.findall("..", key.encode("hex")))
 		
-	def capture_input(self, mod = ""):
+	def capture_input(self, mod = "", index = 0):
+		if IS_CMD_ARGS:
+			return sys.argv[index]
 		if not mod == "":
 			mod = "(%s)" % mod
 		return raw_input("\n%s>>> " % mod).strip()
@@ -135,18 +138,22 @@ class RC4:
 		return output	
 		
 if __name__ == "__main__":
+	
+	if len(sys.argv) == 3:
+		IS_CMD_ARGS = True
+
 	try:
 		gen = Generator(TEMPLATE)
 		rc4 = RC4()
 		key = gen.gen_rc4_key(32)
 
-		powershell = gen.capture_input("Path to the PowerShell script")
+		powershell = gen.capture_input("Path to the PowerShell script", 1)
 		powershell = gen.load_file(powershell, False)	
 		while gen.get_error():
-			powershell = gen.capture_input("Path to the PowerShell script")
+			powershell = gen.capture_input("Path to the PowerShell script", 1)
 			powershell = gen.load_file(powershell, False)
 		
-		outfile = gen.capture_input("Path for the generated MsBuild out file")
+		outfile = gen.capture_input("Path for the generated MsBuild out file", 2)
 		cipher = base64.b64encode(rc4.Encrypt(powershell, key))
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
