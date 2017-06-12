@@ -45,7 +45,7 @@ The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-
 
 # Cobalt Strike Aggressor script (wmi_msbuild.cna) By MrT-F
 ```
-In the beacon console once the cna script is uploaded
+In the beacon console once the cna script is uploaded on the team server
 
 use macro "wmi_msbuild [target] [listener]"
 ```
