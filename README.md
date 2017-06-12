@@ -37,6 +37,35 @@ PowerLessShell - Remain Stealth
 [+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
 
+Inline command
+```
+python PowerLessShell.py powershell.ps1 output
+
+
+PowerLessShell - Remain Stealth
+         More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team
+            ___
+        .-"; ! ;"-.
+      .'!  : | :  !`.
+     /\  ! : ! : !  /\
+    /\ |  ! :|: !  | /\
+   (  \ \ ; :!: ; / /  )
+  ( `. \ | !:|:! | / .' )
+  (`. \ \ \!:|:!/ / / .')
+   \ `.`.\ |!|! |/,'.' /
+    `._`.\\!!!// .'_.'
+       `.`.\|//.'.'
+        |`._`n'_.'|
+        `----^----"
+
+
+
+
+[+] output was generated.
+[+] output.cmd was generated.
+[+] Run the command inside of output.cmd on the target system using WMI.
+```
+
 # Example
 
 The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-PowerShell-RAT without running a single instance of PowerShell
