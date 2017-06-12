@@ -1,6 +1,6 @@
 # PowerLessShell
 
-PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and commands without spawing powershell.exe
+PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and commands without spawing powershell.exe. To add another layer of crap the payload will copy msbuild.exe to something random and build the payload using the randomly generated binary.
 
 # Usage
 
