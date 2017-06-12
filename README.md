@@ -43,7 +43,7 @@ The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-
 
 ![PowerLessShell](https://ringzer0team.com/powershellless.png)
 
-# Cobalt Strike Aggressor script By MrT-F
+# Cobalt Strike Aggressor script (wmi_msbuild.cna) By MrT-F
 ```
 In the beacon console once the cna script is uploaded
 
