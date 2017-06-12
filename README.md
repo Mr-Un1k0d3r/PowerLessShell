@@ -80,7 +80,7 @@ cd /root/cobaltstrike
 ```
 Clone this repository into folder PowerLessShell
 ```
-git clone https://github.com/Mr-Un1k0d3r/PowerLessShell.git PowerLessShell
+git clone https://github.com/Mr-Un1k0d3r/PowerLessShell.git
 ```
 Load the aggressor script in your Cobalt Strike Console
 Laterally move just like other Cobalt Strike macros:
