@@ -43,6 +43,13 @@ The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-
 
 ![PowerLessShell](https://ringzer0team.com/powershellless.png)
 
+# Cobalt Strike Aggressor script By MrT-F
+```
+In the beacon console once the cna script is uploaded
+
+use macro "wmi_msbuild [target] [listener]"
+```
+
 # TODO 
 Use impacket library to automate the file push and execution of the msbuild command.
 
