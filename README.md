@@ -2,6 +2,8 @@
 
 PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and commands without spawing powershell.exe. To add another layer of crap the payload will copy msbuild.exe to something random and build the payload using the randomly generated binary.
 
+You can provide -knownprocess switch to use known Windows process name instead of renaming MsBuild.exe to something random
+
 # Usage
 
 Attacker side
@@ -31,6 +33,7 @@ PowerLessShell - Remain Stealth
 
 (Path for the generated MsBuild out file)>>> payload.csproj
 
+(Use known process name to perform MsBuild renaming (Default: False))>>>
 
 [+] payload.csproj was generated.
 [+] payload.csproj.cmd was generated.
@@ -39,7 +42,7 @@ PowerLessShell - Remain Stealth
 
 Inline command
 ```
-python PowerLessShell.py powershell.ps1 output
+python PowerLessShell.py powershell.ps1 output (optional -knownprocess)
 
 
 PowerLessShell - Remain Stealth
