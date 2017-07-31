@@ -159,7 +159,8 @@ if __name__ == "__main__":
 			TEMPLATE = TEMPLATE + "shellcode.csproj"
 		else:
 			TEMPLATE = TEMPLATE + "powershell.csproj"
-			
+
+		gen.set_template(TEMPLATE)
 		rc4 = RC4()
 		key = gen.gen_rc4_key(32)
 		
