@@ -148,6 +148,7 @@ class RC4:
 if __name__ == "__main__":
 	gen = Generator()
 	input_name = "PowerShell script"
+	data = ""
 	
 	if len(sys.argv) >= 4:
 		IS_CMD_ARGS = True
@@ -165,7 +166,7 @@ if __name__ == "__main__":
 		key = gen.gen_rc4_key(32)
 		
 		data_path = gen.capture_input("Path to the %s" % input_name, 1)
-		data_path = gen.load_file(data_path, False)	
+		data = gen.load_file(data_path, False)	
 		while gen.get_error():
 			data_path = gen.capture_input("Path to the %s" % input_name)
 			data = gen.load_file(data_path, False)
