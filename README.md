@@ -96,6 +96,8 @@ PowerLessShell - Remain Stealth
 
 (Path for the generated MsBuild out file)>>> payload.csproj
 
+(Set USERDOMAIN condition (Default ''))>>>
+
 (Use known process name to perform MsBuild renaming (Default: False))>>>
 
 [+] payload.csproj was generated.
