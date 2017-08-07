@@ -1,11 +1,33 @@
 # PowerLessShell
 
-PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and commands without spawing powershell.exe. 
+PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and commands without spawning powershell.exe. 
 You can also execute raw shellcode using the same approach.
 
 To add another layer of crap the payload will copy msbuild.exe to something random and build the payload using the randomly generated binary.
 
 * You can provide -knownprocess switch to use known Windows process name instead of renaming MsBuild.exe to something random
+
+# MSBuild conditions 
+
+MSBuild support condition that can be used to avoid running code if the condition is not met.
+
+```
+<Target Name="x" Condition="'$(USERDOMAIN)'=='RingZer0'">
+```
+
+The malicious code will only be executed if the current user domain is "RingZer0"
+
+Condition supports several other formats that can be used to create more conditional execution check.
+
+```
+<Target Name="x" Condition="'$(registry:HKEY_LOCAL_MACHINE\blah@blah)'>='0'">
+```
+
+Property Functions also expose interesting data.
+
+```
+https://docs.microsoft.com/en-us/visualstudio/msbuild/property-functions
+```
 
 # Usage
 
@@ -36,6 +58,8 @@ PowerLessShell - Remain Stealth
 (Path to the raw shellcode file)>>> shellcode.raw
 
 (Path for the generated MsBuild out file)>>> payload.csproj
+
+(Set USERDOMAIN condition (Default ''))>>> RingZer0
 
 (Use known process name to perform MsBuild renaming (Default: False))>>>
 
@@ -78,7 +102,6 @@ PowerLessShell - Remain Stealth
 [+] payload.csproj.cmd was generated.
 [+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
-
 
 Inline command
 ```
