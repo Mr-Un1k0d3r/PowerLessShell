@@ -2,7 +2,7 @@
 [PAYLOAD]
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="VAR1">
+  <Target Name="VAR1"[CONDITION]>
    <VAR1 />
    <VAR2 />
    </Target>

