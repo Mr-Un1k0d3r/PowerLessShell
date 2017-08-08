@@ -50,7 +50,7 @@ class Generator:
 		return "".join(random.SystemRandom().choice(string.ascii_uppercase + string.ascii_lowercase) for _ in range(size)) 
 
 	def gen_process(self):
-		name = ["csrss.exe","explorer.exe","iexplorer.exe","firefox.exe","chrome.exe","lsass.exe","services.exe","smss.exe","spoolsv.exe","svchost.exe","winlogon.exe","wininit.exe","taskmgr.exe","conhost.exe","OUTLOOK.exe", "WINWORD.exe", "EXCEL.exe"]
+		name = ["csrss.exe","explorer.exe","iexplore.exe","firefox.exe","chrome.exe","lsass.exe","services.exe","smss.exe","spoolsv.exe","svchost.exe","winlogon.exe","wininit.exe","taskmgr.exe","conhost.exe","OUTLOOK.exe", "WINWORD.exe", "EXCEL.exe"]
 		return name[random.randrange(0, len(name) - 1)]
 		
 	def rand_vars(self):
