@@ -66,7 +66,7 @@ Options:
 If the file `beacon.bin` is in the current directory and the output directory `output` already exists, you can just run the script and everything should be detected.
 
 ```
-./PowerLessShell.py
+$ ./PowerLessShell.py
 PowerLessShell - More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team / blark's fork
             ___
         .-"; ! ;"-.
@@ -93,7 +93,7 @@ Otherwise you can do something like this:
 $ ./PowerLessShell.py -k ps --csproj-out --known-process leetpayload.txt icq_updater.cmd
 ```
 
-<stdin> and <stdout> work too:
+&lt;stdin&gt; and &lt;stdout&gt; work too:
 
 ```
 $ cat payload.ps1 | ./PowerLessShell.py -k ps - stdin.cmd
