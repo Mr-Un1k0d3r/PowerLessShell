@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # Author: Mr.Un1k0d3r - RingZer0 Team 2017
+# with cmd enhancements by blark
 
 from __future__ import print_function
 import random
@@ -94,6 +95,7 @@ class Generator:
                 return current
 
         def gen_final_cmd(self, path):
+                size = 0
                 filepath = []
                 filepath.append(self.gen_str(random.randrange(8, 18)))
                 filepath.append(self.gen_str(random.randrange(8, 18)))
@@ -110,7 +112,6 @@ class Generator:
                            "set f1=%p%\\{1}\r\n"
                            "IF EXIST %f1% (GOTO RUN)\r\n"
                            ).format(filepath[0], filepath[1], filepath[2])
-                size = 0
 
                 data = self.load_file(path).encode("hex")
                 for index, chunk in enumerate(re.findall("." * self.chunk_size, data)):
