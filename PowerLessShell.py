@@ -97,9 +97,8 @@ class Generator:
         def gen_final_cmd(self, path):
                 size = 0
                 filepath = []
-                filepath.append(self.gen_str(random.randrange(8, 18)))
-                filepath.append(self.gen_str(random.randrange(8, 18)))
-                filepath.append(self.gen_str(random.randrange(8, 18)))
+                for i in xrange(3):
+                    filepath.append(self.gen_str(random.randrange(8, 18)))
 
                 # if user is SYSTEM then use the msbuild path and perform msbuild copy
                 # otherwise work out of %temp% and don't copy the binary
@@ -108,8 +107,7 @@ class Generator:
                            "set w=0 && set p=\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\\r\n"
                            "copy /Y NUL %p%\\{2} > NUL 2>&1 && set w=1\r\n"
                            "IF %w%==1 (del %p%\\{2}) ELSE (set p=%temp%)\r\n"
-                           "set f0=%p%\\{0}\r\n"
-                           "set f1=%p%\\{1}\r\n"
+                           "set f0=%p%\\{0} && set f1=%p%\\{1}\r\n"
                            "IF EXIST %f1% (GOTO RUN)\r\n"
                            ).format(filepath[0], filepath[1], filepath[2])
 
