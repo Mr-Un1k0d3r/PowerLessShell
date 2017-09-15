@@ -181,7 +181,7 @@ if __name__ == "__main__":
 		cipher = base64.b64encode(rc4.Encrypt(data, key))
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
-		condition = gen.capture_input("Set USERDOMAIN condition (Default '')", 3).strip()
+		condition = gen.capture_input("Set USERDOMAIN condition (Default '')", 4).strip()
 		output = gen.set_condition(output, condition)
 		
 		try:
