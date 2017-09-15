@@ -68,7 +68,10 @@ class Generator:
 		
 	def capture_input(self, mod = "", index = 0):
 		if IS_CMD_ARGS:
-			return sys.argv[index]
+			try:
+				return sys.argv[index]
+			except:
+				return ""
 		if not mod == "":
 			mod = "(%s)" % mod
 		return raw_input("\n%s>>> " % mod).strip()
