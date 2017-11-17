@@ -199,7 +199,7 @@ if __name__ == "__main__":
 			
 		outcmd = gen.gen_final_cmd(outfile)
 		try:
-			open(outfile + ".cmd", "wb").write(outcmd)
+			open(outfile + ".bat", "wb").write(outcmd)
 		except:
 			gen.print_error("Failed to write the output to %s.cmd" % outfile)
 
