@@ -64,7 +64,7 @@ PowerLessShell - Remain Stealth
 (Use known process name to perform MsBuild renaming (Default: False))>>>
 
 [+] payload.csproj was generated.
-[+] payload.csproj.cmd was generated.
+[+] payload.csproj.bat was generated.
 [+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
 
@@ -101,7 +101,7 @@ PowerLessShell - Remain Stealth
 (Use known process name to perform MsBuild renaming (Default: False))>>>
 
 [+] payload.csproj was generated.
-[+] payload.csproj.cmd was generated.
+[+] payload.csproj.bat was generated.
 [+] Run the command inside of payload.csproj.cmd on the target system using WMI.
 ```
 
@@ -130,7 +130,7 @@ PowerLessShell - Remain Stealth
 
 
 [+] output was generated.
-[+] output.cmd was generated.
+[+] output.bat was generated.
 [+] Run the command inside of output.cmd on the target system using WMI.
 ```
 
