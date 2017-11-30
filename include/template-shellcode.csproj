@@ -72,7 +72,7 @@
 							IntPtr VAR43 = IntPtr.Zero;
 							IntPtr VAR44 = IntPtr.Zero;
 							UInt32 VAR45 = 0;
-							VAR43 = VAR35(0, 0, VAR42, VAR44, 0, ref VAR45);
+							VAR43 = VAR35(IntPtr.Zero, 0, (IntPtr)VAR42, VAR44, 0, VAR45);
 							WaitForSingleObject(VAR43, 0xFFFFFFFF);
 							return true;
 						}
