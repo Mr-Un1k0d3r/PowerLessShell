@@ -195,10 +195,6 @@ sub msbuild {
     		berror($1, "Listener " . %args['listener'] . " does not exist");
     		return;
    	}
-	else if ( 'user' in args && listener_info(%args['listener'], 'payload') ismatch '.*smb.*') { 
-		berror($1, "You can't specify a username/password with an SMB listener. Either make_token as your target user or specify a different listener."); 
-		return;
-	}
 
 	###############
 	# MSBuild.exe #
