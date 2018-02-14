@@ -43,7 +43,7 @@ beacon_command_register("check_msbuild",
 
 beacon_command_register("rename_msbuild", 
 		"Create innocent looking copy of MSBuild.exe",
-		"Synopsis: rename_msbuild -target TARGET -msbuild [newname] [-path C:\new\path] [-user username] [-pass password]", 
+		"Synopsis: rename_msbuild -target TARGET -msbuild [newname] [-path C:\\new\\path] [-user username] [-pass password]", 
 		"This copies MSBuild.exe to C:\\Users\\Public by default.");
 
 beacon_command_register("wmi_msbuild", 
