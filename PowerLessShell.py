@@ -203,7 +203,7 @@ if __name__ == "__main__":
 		except:
 			gen.print_error("Failed to write the output to %s.bat" % outfile)
 
-		print "\n\n[+] %s was generated.\n[+] %s.cmd was generated.\n[+] Run the command inside of %s.cmd on the target system using WMI." % (outfile, outfile, outfile)			
+		print "\n\n[+] %s was generated.\n[+] %s.bat was generated.\n[+] Run the command inside of %s.bat on the target system using WMI." % (outfile, outfile, outfile)			
 	except KeyboardInterrupt:
 			print ""
 			gen.print_error("Exiting")
