@@ -201,7 +201,7 @@ if __name__ == "__main__":
 		try:
 			open(outfile + ".bat", "wb").write(outcmd)
 		except:
-			gen.print_error("Failed to write the output to %s.cmd" % outfile)
+			gen.print_error("Failed to write the output to %s.bat" % outfile)
 
 		print "\n\n[+] %s was generated.\n[+] %s.cmd was generated.\n[+] Run the command inside of %s.cmd on the target system using WMI." % (outfile, outfile, outfile)			
 	except KeyboardInterrupt:
