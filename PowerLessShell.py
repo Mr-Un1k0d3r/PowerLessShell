@@ -130,7 +130,7 @@ class Generator:
 		junk = ["int", "string", "int[]", "byte[]", "object", "var", "float", "short", "uint", "IntPtr"]
 		data = ""
 		for i in range(0, random.randrange(1, 12)):
-			data += "\t\t\t\t%s %s = %s;\r\n" % (random.choice(junk), self.gen_str(random.randrange(5, 25)), random.choice(["0", "NULL"]))
+			data += "\t\t\t\t%s %s = %s;\r\n" % (random.choice(junk), self.gen_str(random.randrange(5, 25)), "0")
 			
 		return data
 class RC4:
