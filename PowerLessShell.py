@@ -127,7 +127,7 @@ class Generator:
 		return ''.join(random.sample(charset,len(charset)))
 	
 	def gen_junk(self):
-		junk = ["int", "var", "float", "short", "uint"]
+		junk = ["int", "var", "float", "decimal", "uint", "double", "long"]
 		data = ""
 		for i in range(0, random.randrange(1, 12)):
 			data += "\t\t\t\t%s %s = %d;\r\n" % (random.choice(junk), self.gen_str(random.randrange(5, 25)), random.randrange(1, 100000))
