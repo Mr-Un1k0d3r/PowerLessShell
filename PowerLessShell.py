@@ -125,6 +125,14 @@ class Generator:
    	@staticmethod
     	def gen_pattern(charset):	
 		return ''.join(random.sample(charset,len(charset)))
+	
+	def gen_junk():
+		junk = ["int", "string", "int[]", "byte[]", "object", "var", "float", "short", "uint", "IntPtr"]
+		data = ""
+		for i in range(1, random.randrange(2, 5)):
+			data += "%s %s = 0\r\n" % (random.choice(junk), self.gen_str(random.randrange(5, 25)))
+			
+		return data
 class RC4:
 
 	def KSA(self, key):
@@ -187,7 +195,8 @@ if __name__ == "__main__":
 		
 		pattern1 = Generator.gen_pattern("#!@$%?&")
 		pattern2 = Generator.gen_pattern(",.<>)(*[]{}")	
-		cipher.replace("m", pattern1).replace("V", pattern2)
+		cipher = cipher.replace("m", pattern1).replace("V", pattern2)
+		cipher = cipher.replace("[JUNK1]", gen.gen_junk()).replace("[JUNK2]", gen.gen_junk()).replace("[JUNK3]", gen.gen_junk())
 		
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
