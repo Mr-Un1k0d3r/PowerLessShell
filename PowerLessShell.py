@@ -193,8 +193,8 @@ if __name__ == "__main__":
 		outfile = gen.capture_input("Path for the generated MsBuild out file", 2)
 		cipher = base64.b64encode(rc4.Encrypt(data, key))
 		
-		pattern1 = Generator.gen_pattern("#!@$%?&")
-		pattern2 = Generator.gen_pattern(",.<>)(*[]{}")	
+		pattern1 = Generator.gen_pattern("#!@$%?&-~")
+		pattern2 = Generator.gen_pattern(",.<>)(*[]{}`")	
 		cipher = cipher.replace("m", pattern1).replace("V", pattern2)
 
 		output = gen.get_output()
