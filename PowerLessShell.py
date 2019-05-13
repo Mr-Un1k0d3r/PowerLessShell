@@ -126,7 +126,7 @@ class Generator:
     	def gen_pattern(charset):	
 		return ''.join(random.sample(charset,len(charset)))
 	
-	def gen_junk():
+	def gen_junk(self):
 		junk = ["int", "string", "int[]", "byte[]", "object", "var", "float", "short", "uint", "IntPtr"]
 		data = ""
 		for i in range(1, random.randrange(2, 5)):
