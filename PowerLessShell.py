@@ -54,7 +54,7 @@ class Generator:
 		return name[random.randrange(0, len(name) - 1)]
 		
 	def rand_vars(self):
-		for i in reversed(range(1, 50)):
+		for i in reversed(range(1, 100)):
 			self.data = self.data.replace("VAR" + str(i), self.gen_str(random.randrange(5, 25)))
 			
 	def get_output(self):
