@@ -6,7 +6,7 @@
   <UsingTask
     TaskName="VAR1"
     TaskFactory="CodeTaskFactory"
-    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework[ARCH]\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
     <ParameterGroup/>
     <Task>
       <Using Namespace="System" />
@@ -18,7 +18,7 @@
 	<UsingTask
     TaskName="VAR2"
     TaskFactory="CodeTaskFactory"
-    AssemblyFile="C:\Windows\Microsoft.Net\Framework\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
+    AssemblyFile="C:\Windows\Microsoft.Net\Framework[ARCH]\v4.0.30319\Microsoft.Build.Tasks.v4.0.dll" >
 	<Task>
 	  <Reference Include="System.Management.Automation" />
       <Code Type="Class" Language="cs">
