@@ -179,8 +179,8 @@ if __name__ == "__main__":
 			input_name = "raw shellcode file"
 			TEMPLATE = TEMPLATE + "shellcode.csproj"
 			shellcode_arch = gen.capture_input("Shellcode architecture (32/64)")
-			if not shellcode == "64":
-				shellcode = ""
+			if not shellcode_arch == "64":
+				shellcode_arch = ""
 		else:
 			TEMPLATE = TEMPLATE + "powershell.csproj"
 
