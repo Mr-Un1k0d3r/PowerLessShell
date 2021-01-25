@@ -3,10 +3,6 @@
 PowerLessShell rely on MSBuild.exe to remotely execute PowerShell scripts and commands without spawning powershell.exe. 
 You can also execute raw shellcode using the same approach.
 
-To add another layer of crap the payload will copy msbuild.exe to something random and build the payload using the randomly generated binary.
-
-* You can provide -knownprocess switch to use known Windows process name instead of renaming MsBuild.exe to something random
-
 # MSBuild conditions 
 
 MSBuild support condition that can be used to avoid running code if the condition is not met.
