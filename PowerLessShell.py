@@ -114,7 +114,7 @@ if __name__ == "__main__":
 	options = parser.parse_args()
 	
 	template_path = TEMPLATE
-	shellcode_arch = "32"
+	shellcode_arch = ""
 	data = ""
 		
 	if options.type == "powershell":
