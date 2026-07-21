@@ -134,7 +134,7 @@ if __name__ == "__main__":
 		print("Generating a payload for a 64 bits shellcode! Don't forget to use the 64 bits version of msbuild.exe")
 
 	if options.arch != "64" and options.type == "shellcode_inject":
-		print("Shellcode Injection Template is in use with 32 bits architecure! Don't forget to use 32 bits process to inject")
+		print("Shellcode Injection Template is in use with 32 bits architecture! Don't forget to use 32 bits process to inject")
 
 	gen.set_template(template_path)
 	rc4 = RC4()
